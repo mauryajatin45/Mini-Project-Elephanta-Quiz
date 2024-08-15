@@ -16,27 +16,27 @@
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="/Images/New_Logo.png" alt="Elephanta Logo" />
+            <img src="./Images/New_Logo.png" alt="Elephanta Logo" />
         </div>
         <div class="user-info">
-            <img src="/Images/Profile.png" alt="Profile" class="profile-image" />
+            <img src="./Images/Profile.png" alt="Profile" class="profile-image" />
             <span>Jatin Maurya</span>
-            <img src="/Images/Dropdown.png" alt="DropDown" />
+            <img src="./Images/Dropdown.png" alt="DropDown" />
         </div>
     </div>
 
     <div class="sidebar">
         <ul>
             <div class="menu-item active overview">
-                <img src="/Images/Overview test.png" alt="overview-image" class="sidebar-img" />
+                <img src="./Images/Overview test.png" alt="overview-image" class="sidebar-img" />
                 <li id="overview">Overview</li>
             </div>
             <div class="menu-item create-quiz">
-                <img src="/Images/Create_icon.png" alt="create-quiz-image" class="sidebar-img" />
+                <img src="./Images/Create_icon.png" alt="create-quiz-image" class="sidebar-img" />
                 <li id="create-quiz">Create Quiz</li>
             </div>
             <div class="menu-item profile">
-                <img src="/Images/Profile.png" alt="profile-image" class="sidebar-img" />
+                <img src="./Images/Profile.png" alt="profile-image" class="sidebar-img" />
                 <li id="profile">Profile</li>
             </div>
 
@@ -61,10 +61,10 @@
                     </div>
                     <div class="card card1">
                         <h3>Create <br> Quiz</h3>
-                        <img src="/Images/Create_icon.png" alt="Create_icon">
+                        <img src="./Images/Create_icon.png" alt="Create_icon">
                     </div>
                     <div class="card card2">
-                        <img src="/Images/Customer_support.png" alt="Customer_support" class="Customer_support-img">
+                        <img src="./Images/Customer_support.png" alt="Customer_support" class="Customer_support-img">
                         <h3>Contact Us</h3>
                     </div>
                     <div class="active-bar"></div>
@@ -119,20 +119,70 @@
                                 <td>25 Members</td>
                             </tr>
                         </table>
-                    </div>                    
+                    </div>
                 </div>
 
             </div>
 
             <div id="create-quiz-page" class="page">
-                <h2>Quiz Name</h2>
+                <div class="quiz-name">
+                    <h2 class="underline">Quiz Name</h2>
+                    <img src="./Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
+                </div>
                 <div class="white-container">
+                    <div class="blue-container">
+                        <div class="main-details">
+                            <div class="schedule">
+                                <h2>Do you want to Schedule the quiz?</h2>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                                <input type="date" id="quizDate">
+                            </div>
 
-                </div>                
+                            <div class="time-limited">
+                                <h2>Do you want to Schedule the quiz?</h2>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                                <select id="time-limit">
+                                    <option id="second" value="5">5 sec</option>
+                                    <option id="second" value="10">10 sec</option>
+                                    <option id="second" value="15">15 sec</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="white-container-2">
+                            <div class="question">
+                                <label for="question1">1. Enter your Question here!!!</label>
+                                <input type="text" id="question1" placeholder="Enter your question" required>
+                                <input type="text" id="answer1" placeholder="Answer">
+                            </div>
+                            <div class="question">
+                                <label for="question2">2. Enter your Question here!!!</label>
+                                <input type="text" id="question2" placeholder="Enter your question" required
+                                    style="margin-bottom: 1%;">
+
+                                <div class="options">
+                                    <input type="text" id="optionA" placeholder="Option - A" required><br>
+                                    <input type="text" id="optionB" placeholder="Option - B" required><br>
+                                    <input type="text" id="optionC" placeholder="Option - C" required><br>
+                                    <input type="text" id="optionD" placeholder="Option - D" required><br>
+                                </div>
+                                <p class="note">*Tick the Correct answer to automatically calculate score</p>
+                            </div>
+                            <div class="submit">
+                                <img src="./Images/save_logo.png" alt="submit logo"  style="width: 50px;">
+                                <h3>Submit</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 

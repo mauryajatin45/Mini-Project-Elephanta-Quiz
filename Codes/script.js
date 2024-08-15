@@ -30,3 +30,35 @@ menuItems.forEach((item, index) => {
   });
 });
 
+
+
+
+document.getElementById('toggle').addEventListener('change', function() {
+  if (this.checked) {
+    console.log("Toggle is ON");
+    // Add your "ON" state logic here
+  } else {
+    console.log("Toggle is OFF");
+    // Add your "OFF" state logic here
+  }
+});
+
+
+const toggleSwitch = document.getElementById('toggleSwitch');
+    const quizDate = document.getElementById('quizDate');
+
+    toggleSwitch.addEventListener('change', function() {
+        if (toggleSwitch.checked) {
+            quizDate.removeAttribute('disabled');
+            quizDate.style.cursor = 'pointer';
+        } else {
+            quizDate.setAttribute('disabled', 'true');
+            quizDate.style.cursor = 'not-allowed';
+        }
+    });
+
+    // Initialize the state on page load
+    if (!toggleSwitch.checked) {
+        quizDate.setAttribute('disabled', 'true');
+        quizDate.style.cursor = 'not-allowed';
+    }
