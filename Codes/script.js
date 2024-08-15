@@ -18,13 +18,15 @@ function showPage(pageId) {
 showPage('overview-page');
 
 
-document.getElementById('overview').addEventListener('click', function() {
-    document.getElementById('overview-section').classList.add('active');
-    document.getElementById('create-quiz-section').classList.remove('active');
-});
+const menuItems = document.querySelectorAll('.menu-item');
+const activeBar = document.querySelector('.active-bar');
 
-document.getElementById('create-quiz').addEventListener('click', function() {
-    document.getElementById('create-quiz-section').classList.add('active');
-    document.getElementById('overview-section').classList.remove('active');
+menuItems.forEach((item, index) => {
+  item.addEventListener('click', () => {
+    document.querySelector('.menu-item.active').classList.remove('active');
+    item.classList.add('active');
+    
+    activeBar.style.top = `${index * 50}px`; // Assuming each menu item has a height of 50px
+  });
 });
 
