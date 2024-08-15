@@ -133,58 +133,64 @@
                     <div class="blue-container">
                         <div class="main-details">
                             <form action="/submit-quiz" method="POST" class="quiz-form">
-                            <div class="schedule">
-                                <h2>Do you want to Schedule the quiz?</h2>
-                                <label class="switch">
-                                    <input type="checkbox" id="toggle">
-                                    <span class="slider round"></span>
-                                </label>
-                                <input type="date" id="quizDate" disabled>
-                            </div>
-        
-                            <div class="time-limited">
-                                <h2>Do you want to set time limit?</h2>
-                                <label class="switch">
-                                    <input type="checkbox" id="timeLimitToggle">
-                                    <span class="slider round"></span>
-                                </label>
-                                <select id="quizTime" class="time-limit" disabled>
-                                    <option value="" disabled selected>Select time limit</option>
-                                    <option value="5">5 sec</option>
-                                    <option value="10">10 sec</option>
-                                    <option value="15">15 sec</option>
-                                </select>
-                            </div>
+                                <div class="schedule">
+                                    <h2>Do you want to Schedule the quiz?</h2>
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <input type="date" id="quizDate" disabled>
+                                </div>
+
+                                <div class="time-limited">
+                                    <h2>Do you want to set time limit?</h2>
+                                    <label class="switch">
+                                        <input type="checkbox" id="timeLimitToggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <select id="quizTime" class="time-limit" disabled>
+                                        <option value="" disabled selected>Select time limit</option>
+                                        <option value="5">5 sec</option>
+                                        <option value="10">10 sec</option>
+                                        <option value="15">15 sec</option>
+                                    </select>
+                                </div>
                         </div>
 
-                            <div class="white-container-2">
-                                <div class="question">
-                                    <label for="question1">1. Enter your Question here!!!</label>
-                                    <input type="text" id="question1" name="question1" placeholder="Enter your question" required>
-                                    <input type="text" id="answer1" name="answer1" placeholder="Answer" required>
-                                </div>
-                        
-                                <div class="question">
-                                    <label for="question2">2. Enter your Question here!!!</label>
-                                    <input type="text" id="question2" name="question2" placeholder="Enter your question" required style="margin-bottom: 1%;">
-                        
-                                    <div class="options">
-                                        <input type="text" id="optionA" name="optionA" placeholder="Option - A" required><br>
-                                        <input type="text" id="optionB" name="optionB" placeholder="Option - B" required><br>
-                                        <input type="text" id="optionC" name="optionC" placeholder="Option - C" required><br>
-                                        <input type="text" id="optionD" name="optionD" placeholder="Option - D" required><br>
-                                    </div>
-                                    <p class="note">*Tick the Correct answer to automatically calculate score</p>
-                                </div>
-                                <input type="submit" class="submit" value="Submit Quiz">
+                        <div class="white-container-2">
+                            <div class="question">
+                                <label for="question1">1. Enter your Question here!!!</label>
+                                <input type="text" id="question1" name="question1" placeholder="Enter your question"
+                                    required>
+                                <input type="text" id="answer1" name="answer1" placeholder="Answer" required>
                             </div>
+
+                            <div class="question">
+                                <label for="question2">2. Enter your Question here!!!</label>
+                                <input type="text" id="question2" name="question2" placeholder="Enter your question"
+                                    required style="margin-bottom: 1%;">
+
+                                <div class="options">
+                                    <input type="text" id="optionA" name="optionA" placeholder="Option - A"
+                                        required><br>
+                                    <input type="text" id="optionB" name="optionB" placeholder="Option - B"
+                                        required><br>
+                                    <input type="text" id="optionC" name="optionC" placeholder="Option - C"
+                                        required><br>
+                                    <input type="text" id="optionD" name="optionD" placeholder="Option - D"
+                                        required><br>
+                                </div>
+                                <p class="note">*Tick the Correct answer to automatically calculate score</p>
+                            </div>
+                            <input type="submit" class="submit" value="Submit Quiz">
+                        </div>
                         </form>
                         
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-    <script src="server.js"></script>
+            <script src="script.js"></script>
+            <script src="server.js"></script>
 </body>
 
 </html>
