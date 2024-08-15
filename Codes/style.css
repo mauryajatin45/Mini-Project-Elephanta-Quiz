@@ -373,11 +373,7 @@ input:checked + .slider:before {
   gap: 15px;
 }
 
-.quiz-form {
-  width: 100%;
-  padding: 20px;
-  background-color: #f9f9f9;
-}
+
 
 .question {
   margin-top: 2%;
@@ -486,7 +482,7 @@ input[type="date"]{
   display: block;
 }
 
-#time-limit, #second{
+.time-limit, #second{
   width: fit-content;
   padding: 10px;
   margin: 5px 0;
@@ -506,8 +502,7 @@ input[type="date"]{
   align-items: center;
   width: fit-content;
   border: 2px solid #00000079;
-  padding-left: 1%;
-  padding-right: 1%;
+padding: 1%;
   box-shadow: #00000079;
   border-radius: 11px;
   gap: 5px;
@@ -517,5 +512,7 @@ input[type="date"]{
   justify-content: center;
   margin: auto;
   cursor: pointer;
+  background-color: rgb(98, 147, 237);
+  color: white;
+  font-weight: 800;
 }
-
