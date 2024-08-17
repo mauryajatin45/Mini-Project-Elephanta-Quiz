@@ -380,7 +380,8 @@ input:checked+.slider:before {
 
 
 
-#question-container{
+.mcq-question,
+.short-question {
   margin-top: 2%;
   margin-bottom: 20px;
   padding: 10px;
@@ -389,7 +390,7 @@ input:checked+.slider:before {
   padding-bottom: 2%;
 }
 
-#question-containerlabel {
+#question-container label {
   font-size: 18px;
   font-weight: bold;
   display: block;
@@ -398,22 +399,24 @@ input:checked+.slider:before {
 }
 
 #question-container input[type="text"] {
-  width: 90%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-left: 2%;
-}
-
-#question-container input[type="text"] {
-  /* width: calc(100% - 40px); */
-  width: 70%;
+  width: 80%;
   padding: 10px;
   margin: 5px 0;
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-left: 5%;
+}
+
+.options {
+  width: 60%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 input[type="date"] {
@@ -449,14 +452,10 @@ input[type="date"] {
   flex-direction: column;
 }
 
-.submit {
+#submit {
   display: flex;
   align-items: center;
   width: fit-content;
-  border: 2px solid #00000079;
-  padding: 1%;
-  box-shadow: #00000079;
-  border-radius: 11px;
   gap: 5px;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -464,9 +463,6 @@ input[type="date"] {
   justify-content: center;
   margin: auto;
   cursor: pointer;
-  background-color: #5271ff;
-  color: white;
-  font-weight: 800;
 }
 
 #question-container div {
@@ -486,11 +482,12 @@ button {
 
 button:hover {
   background-color: #0056b3;
-} 
+}
 
 .add-questions {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+  margin-bottom: 1%;
 }
