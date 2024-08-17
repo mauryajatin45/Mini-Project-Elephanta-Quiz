@@ -125,6 +125,7 @@
             </div>
 
             <div id="create-quiz-page" class="page">
+                <form id="quiz-form" action="/your-server-endpoint" method="POST"></form>
                 <div class="quiz-name">
                     <h2 class="underline">Quiz Name</h2>
                     <img src="./Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
@@ -161,16 +162,31 @@
                             <div id="question-container"></div>
                             <div class="add-questions">
                                 <button id="add-short-question">Add Short Question</button>
-                                <button id="add-mcq-question">Add MCQ Question</button>                        
+                                <button id="add-mcq-question">Add MCQ Question</button>
                             </div>
                         </div>
-                        <button id="submit">Submit</button> 
+                        <button id="submit">Submit</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+
+            <div class="page" id="profile-page">
+                <div class="profilearea">
+                    <div class="profileareaimg">
+                        <img src="/Images/Profile_page_profile_logo.png" alt="Profile_page" width="50%">
+                    </div>
+                    <div class="profileareacontent">
+                        <h1>Hello, Jatin Maurya</h1>
+                        <h3>You have successfully completed 7 quiz.</h3>
+                        <h3>You have 150+ Attendes.</h3>
                     </div>
                 </div>
             </div>
-            <script src="script.js"></script>
-            <script src="script_dynamic.js"></script>
-            <script src="server.js"></script>
+        </div>
+        <script src="script.js"></script>
+        <script src="script_dynamic.js"></script>
+        <script src="server.js"></script>
 </body>
 
 </html>

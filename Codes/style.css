@@ -491,3 +491,26 @@ button:hover {
   margin-top: 10px;
   margin-bottom: 1%;
 }
+
+.profilearea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 1%;
+}
+.profileareacontent{
+  text-align: end;
+}
+.profileareacontent h1{
+  font-size: 3rem;
+  font-weight: 800;
+  font-family: "poppins";
+  display: flex;
+  align-items: center;
+  margin: 0;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 15px;
+}
