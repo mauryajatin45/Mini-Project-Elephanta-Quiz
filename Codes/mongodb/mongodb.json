@@ -1,0 +1,20 @@
+{
+    "quizName": "Sample Quiz",
+    "isScheduled": true,
+    "quizDate": "2024-08-17T00:00:00Z",
+    "hasTimeLimit": true,
+    "timeLimit": 10,
+    "questions": [
+        {
+            "type": "short",
+            "questionText": "What is the capital of France?",
+            "answer": "Paris"
+        },
+        {
+            "type": "mcq",
+            "questionText": "What is the capital of Germany?",
+            "options": ["Berlin", "Munich", "Frankfurt"],
+            "correctOption": "Berlin"
+        }
+    ]
+}

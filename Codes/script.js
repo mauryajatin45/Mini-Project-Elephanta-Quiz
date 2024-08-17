@@ -83,3 +83,19 @@ document.getElementById('overview').onclick = function() {
     }
   });
   
+
+//card click logic 
+// Page navigation logic
+function showPage(pageId) {
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(page => {
+      page.classList.remove('active');
+  });
+  document.getElementById(pageId).classList.add('active');
+}
+
+// Card click event to navigate to Create Quiz page
+document.querySelector('.card1').addEventListener('click', function() {
+  showPage('create-quiz-page');
+});
+

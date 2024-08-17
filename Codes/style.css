@@ -91,7 +91,6 @@ body {
   display: block;
 }
 
-
 .menu-item {
   display: flex;
   align-items: center;
@@ -151,6 +150,7 @@ body {
   align-items: center;
   padding-right: 2%;
   margin-left: 4%;
+  cursor: pointer;
 }
 
 .card1 img {
@@ -181,7 +181,6 @@ body {
 .card {
   font-size: 1.3rem;
   margin: 0;
-
 }
 
 .container-options-recent {
@@ -207,13 +206,11 @@ td {
   border-collapse: collapse;
 }
 
-
 table {
   margin-top: 20px;
   margin-bottom: 20px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
-
 
 th {
   background: rgba(4, 44, 255, 0.14);
@@ -264,7 +261,6 @@ th {
   height: 60vh;
   border: 1px solid #00000079;
   height: fit-content;
-
 }
 
 .white-container-2 {
@@ -279,7 +275,6 @@ th {
   height: 50vh;
   border: 1px solid #00000079;
   height: fit-content;
-
 }
 
 .switch {
@@ -304,10 +299,11 @@ th {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #FF0000;
-  -webkit-transition: .4s;
-  transition: .4s;
-  box-shadow: 0px 0px 1.4px 1px rgba(0, 0, 0, 0.45), 0px 3px 1.1px -1px rgba(0, 0, 0, 0.25);
+  background-color: #ff0000;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0px 0px 1.4px 1px rgba(0, 0, 0, 0.45),
+    0px 3px 1.1px -1px rgba(0, 0, 0, 0.25);
 }
 
 .slider:before {
@@ -318,19 +314,19 @@ th {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
-input:checked+.slider {
-  background-color: #00FF29;
+input:checked + .slider {
+  background-color: #00ff29;
 }
 
-input:focus+.slider {
-  box-shadow: 0 0 1px #00FF29;
+input:focus + .slider {
+  box-shadow: 0 0 1px #00ff29;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -378,8 +374,6 @@ input:checked+.slider:before {
   gap: 15px;
 }
 
-
-
 .mcq-question,
 .short-question {
   margin-top: 2%;
@@ -426,7 +420,7 @@ input[type="date"] {
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-left: 5%;
-  font-family: 'poppins';
+  font-family: "poppins";
 }
 
 .note {
@@ -434,7 +428,6 @@ input[type="date"] {
   font-size: 12px;
   margin-top: 10px;
 }
-
 
 .time-limit,
 #second {
@@ -444,7 +437,7 @@ input[type="date"] {
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-left: 5%;
-  font-family: 'poppins';
+  font-family: "poppins";
 }
 
 .main-details {
@@ -470,7 +463,7 @@ input[type="date"] {
 }
 
 button {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -499,10 +492,10 @@ button:hover {
   margin-top: 10px;
   margin-bottom: 1%;
 }
-.profileareacontent{
+.profileareacontent {
   text-align: end;
 }
-.profileareacontent h1{
+.profileareacontent h1 {
   font-size: 3rem;
   font-weight: 800;
   font-family: "poppins";
@@ -513,4 +506,21 @@ button:hover {
   align-content: center;
   justify-content: center;
   gap: 15px;
+}
+
+.name_of_quiz {
+  border: none;
+  background-color: transparent;
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: "poppins";
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 15px;
+  width: 10%;
+  overflow: scroll;
 }

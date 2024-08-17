@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="./Images/elephanta's_E.png">
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet" />
@@ -127,7 +128,7 @@
             <div id="create-quiz-page" class="page">
                 <form id="quiz-form" action="/your-server-endpoint" method="POST"></form>
                 <div class="quiz-name">
-                    <h2 class="underline">Quiz Name</h2>
+                    <input type="text" placeholder="Quiz Name" class="name_of_quiz">
                     <img src="./Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
                 </div>
                 <div class="white-container">
@@ -165,7 +166,7 @@
                                 <button id="add-mcq-question">Add MCQ Question</button>
                             </div>
                         </div>
-                        <button id="submit">Submit</button>
+                        <button id="submit">Create Quiz</button>
                     </div>
                 </div>
                 </form>
