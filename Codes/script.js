@@ -16,7 +16,7 @@ function showPage(pageId) {
 }
 
 // Show the overview page by default
-showPage('create-quiz-page');//Late change the id to the overview page
+showPage('overview-page');//Late change the id to the overview page
 
 // Menu navigation with active bar
 const menuItems = document.querySelectorAll('.menu-item');
