@@ -29,24 +29,35 @@ menuItems.forEach((item, index) => {
       activeBar.style.top = `${index * 50}px`; // Adjust based on menu item height
   });
 });
+document.addEventListener('DOMContentLoaded', function () {
+  const toggle = document.getElementById('toggle');
+  const quizDate = document.getElementById('quizDate');
+  const timeLimitToggle = document.getElementById('timeLimitToggle');
+  const quizTime = document.getElementById('quizTime');
 
-// Toggle switch logic for enabling/disabling date and time inputs
-const toggleSwitch = document.getElementById('toggle');
-const quizDate = document.getElementById('quizDate');
-const quizTime = document.getElementById('quizTime');  // Reference to time input
+  // Toggle date input
+  toggle.addEventListener('change', function () {
+      if (toggle.checked) {
+          quizDate.disabled = false;
+          quizDate.classList.remove('disabled-cursor');
+      } else {
+          quizDate.disabled = true;
+          quizDate.value = ''; // Clear the value when disabled
+          quizDate.classList.add('disabled-cursor');
+      }
+  });
 
-toggleSwitch.addEventListener('change', function() {
-  if (this.checked) {
-      quizDate.removeAttribute('disabled');
-      quizDate.style.cursor = 'pointer';
-      quizTime.removeAttribute('disabled');  // Enable time input
-      quizTime.style.cursor = 'pointer';
-  } else {
-      quizDate.setAttribute('disabled', 'true');
-      quizDate.style.cursor = 'not-allowed';
-      quizTime.setAttribute('disabled', 'true');  // Disable time input
-      quizTime.style.cursor = 'not-allowed';
-  }
+  // Toggle time select
+  timeLimitToggle.addEventListener('change', function () {
+      if (timeLimitToggle.checked) {
+          quizTime.disabled = false;
+          quizTime.classList.remove('disabled-cursor');
+      } else {
+          quizTime.disabled = true;
+          quizTime.selectedIndex = 0; // Reset the select when disabled
+          quizTime.classList.add('disabled-cursor');
+      }
+  });
 });
 
 // Initialize the state on page load
@@ -57,50 +68,4 @@ if (!toggleSwitch.checked) {
   quizTime.style.cursor = 'not-allowed';
 }
 
-// Quiz form submission logic
-document.addEventListener('DOMContentLoaded', () => {
-  const submitButton = document.querySelector('.submit');
 
-  submitButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-
-      // Collect form data
-      const question1 = document.getElementById('question1').value.trim();
-      const optionA = document.getElementById('optionA').value.trim();
-      const optionB = document.getElementById('optionB').value.trim();
-      const optionC = document.getElementById('optionC').value.trim();
-      const optionD = document.getElementById('optionD').value.trim();
-      const correctAnswer = document.getElementById('answer1').value.trim();
-
-      // Validate form data
-      if (!question1 || !optionA || !optionB || !optionC || !optionD || !correctAnswer) {
-          alert('Please fill out all required fields.');
-          return;
-      }
-
-      // Prepare the data to be sent
-      const quizData = {
-          question: question1,
-          options: [optionA, optionB, optionC, optionD],
-          correctAnswer: correctAnswer
-      };
-
-      try {
-          const response = await fetch('http://localhost:3000/submit-quiz', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(quizData)
-          });
-
-          if (response.ok) {
-              alert('Quiz submitted successfully!');
-          } else {
-              alert('Failed to submit quiz');
-          }
-      } catch (error) {
-          console.error('Error:', error);
-      }
-  });
-});
