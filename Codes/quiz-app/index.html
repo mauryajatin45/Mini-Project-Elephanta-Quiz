@@ -126,50 +126,52 @@
             </div>
 
             <div id="create-quiz-page" class="page">
-                <form id="quiz-form" action="/submit-quiz" method="POST"></form>
-                <div class="quiz-name">
-                    <input type="text" placeholder="Quiz Name" class="name_of_quiz">
-                    <img src="./Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
-                </div>
-                <div class="white-container">
-                    <div class="blue-container">
-                        <div class="main-details">
-                            <div class="schedule">
-                                <h2 style="user-select: none;">Do you want to Schedule the quiz?</h2>
-                                <label class="switch">
-                                    <input type="checkbox" id="toggle">
-                                    <span class="slider round"></span>
-                                </label>
-                                <input type="date" id="quizDate" class="disabled-cursor" disabled>
-                            </div>
-
-                            <div class="time-limited">
-                                <h2 style="user-select: none;">Do you want to set time limit?</h2>
-                                <label class="switch">
-                                    <input type="checkbox" id="timeLimitToggle">
-                                    <span class="slider round"></span>
-                                </label>
-                                <select id="quizTime" class="time-limit disabled-cursor" disabled>
-                                    <option value="" disabled selected>Select time limit</option>
-                                    <option value="5">5 sec</option>
-                                    <option value="10">10 sec</option>
-                                    <option value="15">15 sec</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="white-container-2">
-                            <h2>Your Questions:-</h2>
-                            <div id="question-container"></div>
-                            <div class="add-questions">
-                                <button id="add-short-question">Add Short Question</button>
-                                <button id="add-mcq-question">Add MCQ Question</button>
-                            </div>
-                        </div>
-                        <button id="submit">Create Quiz</button>
+                <form id="quiz-form" action="/submit-quiz" method="POST">
+                    <div class="quiz-name">
+                        <input type="text" name="quizName" placeholder="Quiz Name" class="name_of_quiz">
+                        <img src="./Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
                     </div>
-                </div>
+                    <div class="white-container">
+                        <div class="blue-container">
+                            <div class="main-details">
+                                <div class="schedule">
+                                    <h2 style="user-select: none;">Do you want to Schedule the quiz?</h2>
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <input type="date" id="quizDate" name="scheduleDate" class="disabled-cursor" disabled>
+                                </div>
+                
+                                <div class="time-limited">
+                                    <h2 style="user-select: none;">Do you want to set time limit?</h2>
+                                    <label class="switch">
+                                        <input type="checkbox" id="timeLimitToggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <select id="quizTime" name="timeLimit" class="time-limit disabled-cursor" disabled>
+                                        <option value="" disabled selected>Select time limit</option>
+                                        <option value="5">5 sec</option>
+                                        <option value="10">10 sec</option>
+                                        <option value="15">15 sec</option>
+                                    </select>
+                                </div>
+                            </div>
+                
+                            <div class="white-container-2">
+                                <h2>Your Questions:-</h2>
+                                <div id="question-container"></div>
+                                <div class="add-questions">
+                                    <button type="button" id="add-short-question">Add Short Question</button>
+                                    <button type="button" id="add-mcq-question">Add MCQ Question</button>
+                                </div>
+                            </div>
+                            <div id="feedback" style="display:none;"></div>
+                            <button type="submit" id="submit">Create Quiz</button>
+                        </div>
+                    </div>
                 </form>
+                
             </div>
 
             <div class="page" id="profile-page">
