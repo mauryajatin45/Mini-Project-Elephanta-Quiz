@@ -45,28 +45,27 @@ document.getElementById('add-mcq-question').addEventListener('click', function()
     `;
 
     container.appendChild(div);
-});document.getElementById('quiz-form').addEventListener('submit', function(event) {
+});
+
+document.getElementById('quiz-form').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent default form submission
 
     const form = event.target;
     const formData = new FormData(form);
     
-    // Convert formData to a plain object
-    const data = {};
-    data.questions = []; // Initialize questions array
+    const data = {
+        questions: []
+    };
 
-    // Extract questions from formData
     formData.forEach((value, key) => {
-        // Handle questions separately
         if (key.startsWith('short-question-')) {
             data.questions.push({
                 questionText: value,
                 questionType: 'Short',
-                options: [],
-                correctAnswer: ''
+                options: [], // No options for short questions
+                correctAnswer: '' // No correct answer for short questions
             });
         } else if (key.startsWith('mcq-question-')) {
-            // For MCQ questions, gather options
             const questionIndex = key.match(/\d+$/)[0]; // Extract question number
             const options = [];
             ['1', '2', '3', '4'].forEach(opt => {
@@ -87,8 +86,10 @@ document.getElementById('add-mcq-question').addEventListener('click', function()
         }
     });
 
-    // Send data to the server
-    fetch('/submit-quiz', {
+    // Log the data to check its format before sending
+    console.log('Data being sent:', JSON.stringify(data, null, 2));
+
+    fetch('http://localhost:3000/submit-quiz', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -109,3 +110,6 @@ document.getElementById('add-mcq-question').addEventListener('click', function()
         feedbackDiv.style.display = 'block';
     });
 });
+
+
+// console.log('Data being sent:', JSON.stringify(data, null, 2));
