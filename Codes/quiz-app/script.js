@@ -52,3 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Card click event to navigate to Create Quiz page
   document.querySelector('.card1').addEventListener('click', () => showPage('create-quiz-page'));
 });
+
+
+//code for hamburger
+document.querySelector('.hamburger-icon').addEventListener('click', function() {
+  document.querySelector('.sidebar').classList.toggle('active');
+});

@@ -320,15 +320,15 @@ th {
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #00ff29;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #00ff29;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -494,9 +494,11 @@ button:hover {
   margin-top: 10px;
   margin-bottom: 1%;
 }
+
 .profileareacontent {
   text-align: end;
 }
+
 .profileareacontent h1 {
   font-size: 3rem;
   font-weight: 800;
@@ -632,7 +634,7 @@ select {
   color: #fff;
   font-size: 20px;
   cursor: pointer;
-  font-style:normal;
+  font-style: normal;
   font-weight: 600;
 }
 
@@ -680,4 +682,63 @@ select {
   padding: 10px;
   font-size: 16px;
   flex: 1;
+}
+
+
+/* Hide the sidebar by default on mobile */
+.sidebar {
+  width: 250px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.hamburger-menu {
+  display: none;
+}
+
+.hamburger-icon {
+  cursor: pointer;
+  position: fixed;
+  top: 22%;
+  left: 20px;
+  z-index: 1000;
+}
+
+.hamburger-icon span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px;
+  background-color: black;
+}
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .hamburger-menu {
+    display: block;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .container-options-recent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    /* Full width in mobile view */
+    margin-bottom: 20px;
+    /* Space between cards */
+    padding: 5%;
+  }
+
+  .card1 img {
+    width: 30%;
+  }
 }
