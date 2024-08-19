@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('overview').onclick = () => showPage('overview-page');
   document.getElementById('create-quiz').onclick = () => showPage('create-quiz-page');
   document.getElementById('profile').onclick = () => showPage('profile-page');
+  document.getElementById('Customer_support').onclick = () => showPage('Customer_support-page');
 
   // Show the overview page by default
   showPage('overview-page');

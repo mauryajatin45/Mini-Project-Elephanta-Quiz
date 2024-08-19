@@ -60,11 +60,13 @@ body {
 
 .overview,
 .create-quiz,
-.profile {
+.profile,
+.Customer_support {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
+
 
 .sidebar ul {
   list-style-type: none;
@@ -529,4 +531,153 @@ button:hover {
   margin-top: 20px;
   font-size: 16px;
   font-weight: bold;
+}
+
+
+.container3 {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 11%;
+  padding-right: 11%;
+}
+
+.contact-info,
+.contact-form {
+  padding: 20px;
+  border-radius: 10px;
+  width: 48%;
+  color: #000000;
+  margin-top: 7%;
+}
+
+.contact-info h1 {
+  margin: 0;
+  font-size: 4rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+}
+
+.title {
+  font-size: 18px;
+  margin: 1% 0 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 6%;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+}
+
+.contact-details {
+  margin-top: 8%;
+}
+
+.contact-details p {
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.contact-details p i {
+  margin-right: 10px;
+  font-size: 20px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 2%;
+}
+
+.contact-form input,
+select {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.contact-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  height: 22vh;
+  resize: none;
+}
+
+.contact-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  font-style:normal;
+  font-weight: 600;
+}
+
+.contact-form button:hover {
+  background-color: #0056b3;
+}
+
+.contact-details i {
+  color: #007bff;
+}
+
+.line {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus,
+.contact-form option:focus,
+.contact-form .submit:focus {
+  background-color: #ffffff;
+  outline: none;
+  box-shadow: 0 0 15px rgba(122, 120, 255, 0.626);
+}
+
+.phone-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+}
+
+.country-code {
+  padding: 7.5px;
+  font-size: 16px;
+  width: 32%;
+  margin-right: 1%;
+}
+
+.phone-number {
+  padding: 10px;
+  font-size: 16px;
+  flex: 1;
 }
