@@ -698,8 +698,8 @@ select {
 .hamburger-icon {
   cursor: pointer;
   position: fixed;
-  top: 22%;
-  left: 20px;
+  top: 13%;
+  left: 13px;
   z-index: 1000;
 }
 
@@ -709,6 +709,8 @@ select {
   height: 3px;
   margin: 5px;
   background-color: black;
+  z-index: 1000;
+
 }
 
 /* Media query for mobile view */
