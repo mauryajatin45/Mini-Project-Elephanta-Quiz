@@ -220,6 +220,12 @@ th {
   color: #00000099;
 }
 
+td {
+  background: rgba(4, 44, 255, 0.14);
+  text-align: center;
+  color: #000000;
+}
+
 .main-container {
   width: 100vw;
   min-height: 100vh;
@@ -717,6 +723,7 @@ select {
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
+    z-index: 1000;
   }
 
   .hamburger-menu {
@@ -738,6 +745,7 @@ select {
     margin-bottom: 20px;
     /* Space between cards */
     padding: 5%;
+    z-index: 0;
   }
 
   .card1 img {

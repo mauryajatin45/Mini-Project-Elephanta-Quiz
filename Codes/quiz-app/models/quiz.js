@@ -11,8 +11,8 @@ const questionSchema = new mongoose.Schema({
         enum: ['Short', 'MCQ'],
         required: true
     },
-    options: [String], // Array of options for MCQ questions
-    correctAnswer: String // Correct answer for MCQ questions
+    options: [String],
+    correctAnswer: String
 });
 
 // Define a schema for quizzes
@@ -23,7 +23,11 @@ const quizSchema = new mongoose.Schema({
     },
     scheduleDate: Date,
     timeLimit: Number,
-    questions: [questionSchema] // Embedding the question schema in the quiz schema
+    questions: [questionSchema],
+    createdAt: {
+        type: Date,
+        default: Date.now // Automatically set to the current date and time when a document is created
+    }
 });
 
 // Create a model based on the schema

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="icon" href="./Images/elephanta's_E.png">
+    <link rel="icon" href="../Images/elephanta's_E.png">
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet" />
@@ -17,12 +17,12 @@
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="./Images/New_Logo.png" alt="Elephanta Logo" />
+            <img src="../Images/New_Logo.png" alt="Elephanta Logo" />
         </div>
         <div class="user-info">
-            <img src="./Images/Profile.png" alt="Profile" class="profile-image" />
+            <img src="../Images/Profile.png" alt="Profile" class="profile-image" />
             <span>Jatin Maurya</span>
-            <img src="./Images/Dropdown.png" alt="DropDown" />
+            <img src="../Images/Dropdown.png" alt="DropDown" />
         </div>
     </div>
 
@@ -37,19 +37,19 @@
     <div class="sidebar">
         <ul>
             <div class="menu-item active overview">
-                <img src="./Images/Overview test.png" alt="overview-image" class="sidebar-img" />
+                <img src="../Images/Overview test.png" alt="overview-image" class="sidebar-img" />
                 <li id="overview">Overview</li>
             </div>
             <div class="menu-item create-quiz">
-                <img src="./Images/Create_icon.png" alt="create-quiz-image" class="sidebar-img" />
+                <img src="../Images/Create_icon.png" alt="create-quiz-image" class="sidebar-img" />
                 <li id="create-quiz">Create Quiz</li>
             </div>
             <div class="menu-item profile">
-                <img src="./Images/Profile.png" alt="profile-image" class="sidebar-img" />
+                <img src="../Images/Profile.png" alt="profile-image" class="sidebar-img" />
                 <li id="profile">Profile</li>
             </div>
             <div class="menu-item Customer_support">
-                <img src="./Images/Customer_support.png" alt="profile-image" class="sidebar-img" />
+                <img src="../Images/Customer_support.png" alt="profile-image" class="sidebar-img" />
                 <li id="Customer_support">Customer support</li>
             </div>
         </ul>
@@ -73,10 +73,10 @@
                     </div>
                     <div class="card card1">
                         <h3>Create <br> Quiz</h3>
-                        <img src="./Images/Create_icon.png" alt="Create_icon">
+                        <img src="../Images/Create_icon.png" alt="Create_icon">
                     </div>
                     <div class="card card2">
-                        <img src="./Images/Customer_support.png" alt="Customer_support" class="Customer_support-img">
+                        <img src="../Images/Customer_support.png" alt="Customer_support" class="Customer_support-img">
                         <h3>Customer support</h3>
                     </div>
                     <div class="active-bar"></div>
@@ -84,52 +84,16 @@
                 <div class="inner-white">
                     <h2 style="text-align: center; color: rgba(0, 0, 0, 0.578);">Recent Quiz</h2>
                     <div class="table">
-                        <table>
-                            <tr>
-                                <th style="width: 60%;">Name</th>
-                                <th style="width: 20%;">Date</th>
-                                <th style="width: 20%;">Attendees</th>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
-                            <tr>
-                                <td>My quiz for kids</td>
-                                <td>15/08/2024</td>
-                                <td>25 Members</td>
-                            </tr>
+                        <table id="quizTable" border="1">
+                            <thead>
+                                <tr>
+                                    <th width="70%" >Quiz Name</th>
+                                    <th width="30%" >Date and time of Creation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows will be inserted here dynamically -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -140,7 +104,7 @@
                 <form id="quiz-form" action="/submit-quiz" method="POST">
                     <div class="quiz-name">
                         <input type="text" name="quizName" placeholder="Quiz Name" class="name_of_quiz">
-                        <img src="./Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
+                        <img src="../Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
                     </div>
                     <div class="white-container">
                         <div class="blue-container">
@@ -189,15 +153,16 @@
             <div class="page" id="profile-page">
                 <div class="profilearea">
                     <div class="profileareaimg">
-                        <img src="./Images/Profile_page_profile_logo.png" alt="Profile_page" width="50%">
+                        <img src="../Images/Profile_page_profile_logo.png" alt="Profile_page" width="50%">
                     </div>
                     <div class="profileareacontent">
                         <h1>Hello, Jatin Maurya</h1>
-                        <h3>You have successfully completed 7 quiz.</h3>
+                        <h3 id="quiz-count">You have successfully completed 0 quiz.</h3>
                         <h3>You have 150+ Attendes.</h3>
                     </div>
                 </div>
             </div>
+            
             <div class="page" id="Customer_support-page">
                 <div class="container3" id="hire">
                     <div class="contact-info">
@@ -249,3 +214,4 @@
 </body>
 
 </html>
+
