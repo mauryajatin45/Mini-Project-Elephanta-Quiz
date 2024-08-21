@@ -87,14 +87,20 @@
                         <table id="quizTable" border="1">
                             <thead>
                                 <tr>
-                                    <th width="70%" >Quiz Name</th>
-                                    <th width="30%" >Date and time of Creation</th>
+                                    <th width="70%">Quiz Name</th>
+                                    <th width="30%">Date and time of Creation</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- Rows will be inserted here dynamically -->
                             </tbody>
                         </table>
+                    </div>
+                    <div id="quiz-details-container" style="display: none;" class="quiz-details-container">
+                        <h2 style="text-align: center; color: rgba(0, 0, 0, 0.578);">Quiz Details</h2>
+                        <form id="quiz-details-form">
+                            <!-- Quiz details will be dynamically populated here -->
+                        </form>
                     </div>
                 </div>
 
@@ -130,6 +136,7 @@
                                         <option value="5">5 sec</option>
                                         <option value="10">10 sec</option>
                                         <option value="15">15 sec</option>
+                                        <option value="30">30 sec</option>
                                     </select>
                                 </div>
                             </div>
@@ -157,12 +164,12 @@
                     </div>
                     <div class="profileareacontent">
                         <h1>Hello, Jatin Maurya</h1>
-                        <h3 id="quiz-count">You have successfully completed 0 quiz.</h3>
+                        <h3 id="quiz-count">You have successfully created 0 quiz.</h3>
                         <h3>You have 150+ Attendes.</h3>
                     </div>
                 </div>
             </div>
-            
+
             <div class="page" id="Customer_support-page">
                 <div class="container3" id="hire">
                     <div class="contact-info">
@@ -214,4 +221,3 @@
 </body>
 
 </html>
-

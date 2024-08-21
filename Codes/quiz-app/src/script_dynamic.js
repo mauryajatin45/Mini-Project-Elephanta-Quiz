@@ -108,7 +108,7 @@ const handleFormSubmit = async (event) => {
 // Add event listener for form submission
 document.getElementById('quiz-form').addEventListener('submit', handleFormSubmit);
 
-// Function to fetch quizzes and populate the table
+// Function to fetch quizzes and populate the table with clickable names
 const fetchQuizzes = async () => {
     try {
         const response = await fetch('http://localhost:3000/quizzes');
@@ -116,12 +116,26 @@ const fetchQuizzes = async () => {
         const quizzes = await response.json();
 
         const quizTableBody = document.querySelector('#quizTable tbody');
-        quizTableBody.innerHTML = quizzes.map(quiz => `
-            <tr>
-                <td>${quiz.name}</td>
-                <td>${new Date(quiz.createdAt).toLocaleString()}</td>
-            </tr>
-        `).join('');
+        quizTableBody.innerHTML = '';
+
+        quizzes.forEach(quiz => {
+            const row = document.createElement('tr');
+
+            const nameCell = document.createElement('td');
+            const link = document.createElement('a');
+            link.href = '#';
+            link.textContent = quiz.name;
+            link.addEventListener('click', () => fetchQuizDetails(quiz._id)); // Fetch quiz details on click
+            nameCell.appendChild(link);
+
+            const dateCell = document.createElement('td');
+            dateCell.textContent = new Date(quiz.createdAt).toLocaleString();
+
+            row.appendChild(nameCell);
+            row.appendChild(dateCell);
+
+            quizTableBody.appendChild(row);
+        });
     } catch (err) {
         console.error('Error fetching quizzes:', err);
     }
@@ -129,6 +143,76 @@ const fetchQuizzes = async () => {
 
 // Fetch quizzes on page load
 window.onload = fetchQuizzes;
+
+// Function to fetch quiz details by ID and display them in a read-only form
+const fetchQuizDetails = async (quizId) => {
+    try {
+        const url = `http://localhost:3000/quiz/${quizId}`;
+        console.log(`Fetching quiz details from: ${url}`);
+        const response = await fetch(url);
+        const contentType = response.headers.get('content-type');
+
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+
+        if (contentType && contentType.includes('application/json')) {
+            const quiz = await response.json();
+            displayQuizDetails(quiz);
+        } else {
+            console.error('Expected JSON, but received:', await response.text());
+        }
+    } catch (err) {
+        console.error('Error fetching quiz details:', err);
+    }
+};
+
+
+const displayQuizDetails = (quiz) => {
+    const form = document.getElementById('quiz-details-form');
+    form.innerHTML = ''; // Clear any previous quiz details
+
+    const title = document.createElement('h3');
+    title.textContent = quiz.name;
+    form.appendChild(title);
+
+    quiz.questions.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.className = 'mcq-question';
+        questionDiv.className = 'short-question';
+
+        const questionLabel = document.createElement('label');
+        questionLabel.textContent = `Question ${index + 1}:`;
+        questionDiv.appendChild(questionLabel);
+
+        const questionInput = document.createElement('input');
+        questionInput.type = 'text';
+        questionInput.value = question.questionText;
+        questionInput.readOnly = true;
+        questionDiv.appendChild(questionInput);
+
+        if (question.questionType === 'MCQ') {
+            const optionsLabel = document.createElement('label');
+            optionsLabel.textContent = 'Options:';
+            questionDiv.appendChild(optionsLabel);
+
+            question.options.forEach(option => {
+                const optionInput = document.createElement('input');
+                optionInput.type = 'text';
+                optionInput.value = option;
+                optionInput.readOnly = true;
+                questionDiv.appendChild(optionInput);
+            });
+        }
+
+        form.appendChild(questionDiv);
+    });
+
+    // Show the quiz details form
+    document.getElementById('quiz-details-container').style.display = 'block';
+};
+
 
 // Function to fetch quiz count
 const fetchQuizCount = async () => {
@@ -144,6 +228,3 @@ const fetchQuizCount = async () => {
         console.error('Error fetching quiz count:', error);
     }
 };
-
-// Fetch quiz count on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', fetchQuizCount);

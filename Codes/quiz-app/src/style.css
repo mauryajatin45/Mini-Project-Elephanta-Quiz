@@ -752,3 +752,48 @@ select {
     width: 30%;
   }
 }
+
+.quiz-details-container{
+  background-color: #d0e1ff;
+  padding: 2%;
+  border-radius: 11px;
+  border: 1px solid #00000079;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  user-select: none;
+}
+
+#quiz-details-form h3{
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: "poppins";
+  display: flex;
+  align-items: center;
+  margin: 0;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.short-question label {
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 1%;
+  user-select: none;
+}
+
+.short-question input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-left: 5%;
+  user-select: none;
+}
+
+.short-question, .long-question {
+  border: 1px solid #00000079;
+}
