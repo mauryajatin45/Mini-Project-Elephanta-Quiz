@@ -24,12 +24,11 @@ app.use(express.static(path.join(__dirname, 'src')));
 
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/quizApp', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+
     serverSelectionTimeoutMS: 30000
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Failed to connect to MongoDB:', err));
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Failed to connect to MongoDB:', err));
 
 // Route to submit a new quiz
 app.post('/submit-quiz', async (req, res) => {
@@ -52,25 +51,27 @@ app.post('/submit-quiz', async (req, res) => {
 
 // Route to get the count of quizzes
 app.get('/quiz-count', async (req, res) => {
+    console.log('Received request for quiz count');
     try {
-        const count = await Quiz.countDocuments(); // Get the number of documents in the quizzes collection
-        res.json({ count }); // Send the count as JSON
+        const count = await Quiz.countDocuments();
+        res.json({ count });
     } catch (error) {
         res.status(500).send('Error fetching quiz count: ' + error.message);
     }
 });
 
-// Route to fetch all quizzes with names and creation dates
+
+// Route to fetch all quizzes with names, creation dates, scheduleDate, and timeLimit
 app.get('/quizzes', async (req, res) => {
     try {
-        const quizzes = await Quiz.find({}, 'name createdAt');
+        const quizzes = await Quiz.find({}, 'name createdAt scheduleDate timeLimit');
         res.json(quizzes);
     } catch (error) {
         res.status(500).send('Error fetching quizzes: ' + error.message);
     }
 });
 
-// Route to fetch quiz details by ID
+// Route to fetch quiz details by ID including scheduleDate and timeLimit
 app.get('/quiz/:id', async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.id);
@@ -79,8 +80,7 @@ app.get('/quiz/:id', async (req, res) => {
         }
         res.json(quiz);
     } catch (error) {
-        console.error('Error fetching quiz details:', error);
-        res.status(500).send('Error fetching quiz details');
+        res.status(500).send('Error fetching quiz details: ' + error.message);
     }
 });
 
@@ -93,4 +93,9 @@ app.get('*', (req, res) => {
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+});
+
+
+app.get('/debug', (req, res) => {
+    res.json({ message: 'Debug route hit successfully' });
 });

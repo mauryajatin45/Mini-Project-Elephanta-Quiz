@@ -5,11 +5,11 @@ let questionNumbering = 0;
 
 // Function to create a new short question
 const addShortQuestion = () => {
-    const container = document.getElementById('question-container');
+    const container = document.getElementById("question-container");
     shortQuestionCount++;
     questionNumbering++;
 
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     const uniqueClass = `short-question-${shortQuestionCount}`;
     div.id = uniqueClass;
     div.className = `short-question ${uniqueClass}`;
@@ -24,11 +24,11 @@ const addShortQuestion = () => {
 
 // Function to create a new MCQ question
 const addMCQQuestion = () => {
-    const container = document.getElementById('question-container');
+    const container = document.getElementById("question-container");
     mcqQuestionCount++;
     questionNumbering++;
 
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     const uniqueClass = `mcq-question-${mcqQuestionCount}`;
     div.id = uniqueClass;
     div.className = `mcq-question ${uniqueClass}`;
@@ -49,8 +49,12 @@ const addMCQQuestion = () => {
 };
 
 // Add event listeners for adding questions
-document.getElementById('add-short-question').addEventListener('click', addShortQuestion);
-document.getElementById('add-mcq-question').addEventListener('click', addMCQQuestion);
+document
+    .getElementById("add-short-question")
+    .addEventListener("click", addShortQuestion);
+document
+    .getElementById("add-mcq-question")
+    .addEventListener("click", addMCQQuestion);
 
 // Function to handle form submission
 const handleFormSubmit = async (event) => {
@@ -60,26 +64,28 @@ const handleFormSubmit = async (event) => {
     const formData = new FormData(form);
 
     const data = {
-        questions: []
+        questions: [],
     };
 
     formData.forEach((value, key) => {
-        if (key.startsWith('short-question-')) {
+        if (key.startsWith("short-question-")) {
             data.questions.push({
                 questionText: value,
-                questionType: 'Short',
+                questionType: "Short",
                 options: [],
-                correctAnswer: ''
+                correctAnswer: "",
             });
-        } else if (key.startsWith('mcq-question-')) {
+        } else if (key.startsWith("mcq-question-")) {
             const questionIndex = key.match(/\d+$/)[0];
-            const options = ['1', '2', '3', '4'].map(opt => formData.get(`option${opt}-${questionIndex}`)).filter(opt => opt);
+            const options = ["1", "2", "3", "4"]
+                .map((opt) => formData.get(`option${opt}-${questionIndex}`))
+                .filter((opt) => opt);
 
             data.questions.push({
                 questionText: value,
-                questionType: 'MCQ',
+                questionType: "MCQ",
                 options: options,
-                correctAnswer: formData.get(`correct-answer-${questionIndex}`) || ''
+                correctAnswer: formData.get(`correct-answer-${questionIndex}`) || "",
             });
         } else {
             data[key] = value;
@@ -87,48 +93,50 @@ const handleFormSubmit = async (event) => {
     });
 
     try {
-        const response = await fetch('http://localhost:3000/submit-quiz', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+        const response = await fetch("http://localhost:3000/submit-quiz", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
         });
         const result = await response.text();
-        const feedbackDiv = document.getElementById('feedback');
+        const feedbackDiv = document.getElementById("feedback");
         feedbackDiv.textContent = result;
-        feedbackDiv.style.color = 'green';
-        feedbackDiv.style.display = 'block';
+        feedbackDiv.style.color = "green";
+        feedbackDiv.style.display = "block";
     } catch (error) {
-        const feedbackDiv = document.getElementById('feedback');
-        feedbackDiv.textContent = 'An error occurred. Please try again.';
-        feedbackDiv.style.color = 'red';
-        feedbackDiv.style.display = 'block';
+        const feedbackDiv = document.getElementById("feedback");
+        feedbackDiv.textContent = "An error occurred. Please try again.";
+        feedbackDiv.style.color = "red";
+        feedbackDiv.style.display = "block";
     }
 };
 
 // Add event listener for form submission
-document.getElementById('quiz-form').addEventListener('submit', handleFormSubmit);
+document
+    .getElementById("quiz-form")
+    .addEventListener("submit", handleFormSubmit);
 
 // Function to fetch quizzes and populate the table with clickable names
 const fetchQuizzes = async () => {
     try {
-        const response = await fetch('http://localhost:3000/quizzes');
-        if (!response.ok) throw new Error('Network response was not ok');
+        const response = await fetch("http://localhost:3000/quizzes");
+        if (!response.ok) throw new Error("Network response was not ok");
         const quizzes = await response.json();
 
-        const quizTableBody = document.querySelector('#quizTable tbody');
-        quizTableBody.innerHTML = '';
+        const quizTableBody = document.querySelector("#quizTable tbody");
+        quizTableBody.innerHTML = "";
 
-        quizzes.forEach(quiz => {
-            const row = document.createElement('tr');
+        quizzes.forEach((quiz) => {
+            const row = document.createElement("tr");
 
-            const nameCell = document.createElement('td');
-            const link = document.createElement('a');
-            link.href = '#';
+            const nameCell = document.createElement("td");
+            const link = document.createElement("a");
+            link.href = "#";
             link.textContent = quiz.name;
-            link.addEventListener('click', () => fetchQuizDetails(quiz._id)); // Fetch quiz details on click
+            link.addEventListener("click", () => fetchQuizDetails(quiz._id)); // Fetch quiz details on click
             nameCell.appendChild(link);
 
-            const dateCell = document.createElement('td');
+            const dateCell = document.createElement("td");
             dateCell.textContent = new Date(quiz.createdAt).toLocaleString();
 
             row.appendChild(nameCell);
@@ -137,7 +145,7 @@ const fetchQuizzes = async () => {
             quizTableBody.appendChild(row);
         });
     } catch (err) {
-        console.error('Error fetching quizzes:', err);
+        console.error("Error fetching quizzes:", err);
     }
 };
 
@@ -150,56 +158,76 @@ const fetchQuizDetails = async (quizId) => {
         const url = `http://localhost:3000/quiz/${quizId}`;
         console.log(`Fetching quiz details from: ${url}`);
         const response = await fetch(url);
-        const contentType = response.headers.get('content-type');
+        const contentType = response.headers.get("content-type");
 
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
 
-        if (contentType && contentType.includes('application/json')) {
+        if (contentType && contentType.includes("application/json")) {
             const quiz = await response.json();
             displayQuizDetails(quiz);
         } else {
-            console.error('Expected JSON, but received:', await response.text());
+            console.error("Expected JSON, but received:", await response.text());
         }
     } catch (err) {
-        console.error('Error fetching quiz details:', err);
+        console.error("Error fetching quiz details:", err);
     }
 };
 
-
 const displayQuizDetails = (quiz) => {
-    const form = document.getElementById('quiz-details-form');
-    form.innerHTML = ''; // Clear any previous quiz details
+    const form = document.getElementById("quiz-details-form");
+    form.innerHTML = ""; // Clear any previous quiz details
 
-    const title = document.createElement('h3');
+    const title = document.createElement("h3");
     title.textContent = quiz.name;
     form.appendChild(title);
 
-    quiz.questions.forEach((question, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        questionDiv.className = 'mcq-question';
-        questionDiv.className = 'short-question';
+    // Display scheduled date if available
+    if (quiz.scheduleDate) {
+        const scheduleDateDiv = document.createElement("div");
+        scheduleDateDiv.innerHTML = `
+            <label style="font-weight: bold;">Scheduled Date:</label>
+            <span>${new Date(quiz.scheduleDate).toLocaleString()}</span>
+        `;
+        form.appendChild(scheduleDateDiv);
+    }
 
-        const questionLabel = document.createElement('label');
+    // Display time limit if available
+    if (quiz.timeLimit) {
+        const timeLimitDiv = document.createElement("div");
+        timeLimitDiv.innerHTML = `
+            <label style="font-weight: bold;">Time Limit:</label>
+            <span>${quiz.timeLimit} Seconds per question</span>
+        `;
+        form.appendChild(timeLimitDiv);
+    }
+
+    // Display questions
+    quiz.questions.forEach((question, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+        questionDiv.className = "short-question";
+        // questionDiv.className = 'mcq-question';
+
+        const questionLabel = document.createElement("label");
         questionLabel.textContent = `Question ${index + 1}:`;
         questionDiv.appendChild(questionLabel);
 
-        const questionInput = document.createElement('input');
-        questionInput.type = 'text';
+        const questionInput = document.createElement("input");
+        questionInput.type = "text";
         questionInput.value = question.questionText;
         questionInput.readOnly = true;
         questionDiv.appendChild(questionInput);
 
-        if (question.questionType === 'MCQ') {
-            const optionsLabel = document.createElement('label');
-            optionsLabel.textContent = 'Options:';
+        if (question.questionType === "MCQ") {
+            const optionsLabel = document.createElement("label");
+            optionsLabel.textContent = "Options:";
             questionDiv.appendChild(optionsLabel);
 
-            question.options.forEach(option => {
-                const optionInput = document.createElement('input');
-                optionInput.type = 'text';
+            question.options.forEach((option) => {
+                const optionInput = document.createElement("input");
+                optionInput.type = "text";
                 optionInput.value = option;
                 optionInput.readOnly = true;
                 questionDiv.appendChild(optionInput);
@@ -210,21 +238,41 @@ const displayQuizDetails = (quiz) => {
     });
 
     // Show the quiz details form
-    document.getElementById('quiz-details-container').style.display = 'block';
+    document.getElementById("quiz-details-container").style.display = "block";
 };
-
 
 // Function to fetch quiz count
 const fetchQuizCount = async () => {
     try {
-        const response = await fetch('http://localhost:3000/quiz-count');
-        if (!response.ok) throw new Error('Failed to fetch quiz count');
+        const response = await fetch("http://localhost:3000/quiz-count");
+        if (!response.ok) throw new Error("Failed to fetch quiz count");
         const data = await response.json();
-        const quizCountElement = document.querySelector('#quiz-count');
+        const quizCountElement = document.querySelector("#quiz-count");
         if (quizCountElement) {
             quizCountElement.textContent = `You have successfully completed ${data.count} quiz.`;
         }
     } catch (error) {
-        console.error('Error fetching quiz count:', error);
+        console.error("Error fetching quiz count:", error);
     }
 };
+
+document.getElementById("toggle").addEventListener("change", function () {
+    const quizDateInput = document.getElementById("quizDate");
+    if (this.checked) {
+        quizDateInput.disabled = false;
+
+        // Fetch current date from the internet
+        fetch("https://worldtimeapi.org/api/ip")
+            .then((response) => response.json())
+            .then((data) => {
+                const currentDate = new Date(data.datetime);
+                const formattedDate = currentDate.toISOString().split("T")[0];
+
+                // Set min attribute to current date
+                quizDateInput.setAttribute("min", formattedDate);
+            })
+            .catch((error) => console.error("Error fetching date:", error));
+    } else {
+        quizDateInput.disabled = true;
+    }
+});

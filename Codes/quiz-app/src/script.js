@@ -55,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 //code for hamburger
-document.querySelector('.hamburger-icon').addEventListener('click', function() {
+document.querySelector('.hamburger-icon').addEventListener('click', function () {
   document.querySelector('.sidebar').classList.toggle('active');
 });
-
-
