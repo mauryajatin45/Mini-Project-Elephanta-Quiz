@@ -1,4 +1,3 @@
-// Page navigation logic
 document.addEventListener('DOMContentLoaded', () => {
   // Page navigation
   const showPage = (pageId) => {
@@ -53,8 +52,49 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.card1').addEventListener('click', () => showPage('create-quiz-page'));
 });
 
+// Hamburger menu toggle
+const hamburgerIcon = document.querySelector('.hamburger-icon');
+const sidebar = document.querySelector('.sidebar');
 
-//code for hamburger
-document.querySelector('.hamburger-icon').addEventListener('click', function () {
-  document.querySelector('.sidebar').classList.toggle('active');
+hamburgerIcon.addEventListener('click', function () {
+  sidebar.classList.toggle('active');
+});
+
+// Close hamburger menu when a menu item is selected
+document.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    sidebar.classList.remove('active'); // Close the hamburger menu
+  });
+});
+
+//code to fetch the country code from the server
+
+document.addEventListener('DOMContentLoaded', () => {
+  const countryCodeSelect = document.getElementById('countryCode');
+
+  fetch('https://restcountries.com/v3.1/all')
+      .then(response => response.json())
+      .then(data => {
+          const sortedData = data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+          sortedData.forEach(country => {
+              const option = document.createElement('option');
+              option.value = `${country.idd.root}${country.idd.suffixes ? country.idd.suffixes[0] : ''}`;
+              option.textContent = `${country.flag} ${country.name.common} ${option.value}`;
+              countryCodeSelect.appendChild(option);
+          });
+      })
+      .catch(error => console.error('Error fetching country codes:', error));
+
+  // Add keydown event listener to filter options
+  countryCodeSelect.addEventListener('keydown', (event) => {
+      const char = String.fromCharCode(event.keyCode).toLowerCase();
+      const options = Array.from(countryCodeSelect.options);
+      
+      for (let i = 0; i < options.length; i++) {
+          if (options[i].textContent.toLowerCase().startsWith(char)) {
+              countryCodeSelect.selectedIndex = i;
+              break;
+          }
+      }
+  });
 });
