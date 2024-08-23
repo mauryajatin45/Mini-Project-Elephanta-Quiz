@@ -275,23 +275,24 @@ const fetchQuizCount = async () => {
     }
 };
 
-document.getElementById("toggle").addEventListener("change", function () {
-    const quizDateInput = document.getElementById("quizDate");
+document.getElementById('toggle').addEventListener('change', function() {
+    const quizDateInput = document.getElementById('quizDate');
     if (this.checked) {
         quizDateInput.disabled = false;
 
         // Fetch current date from the internet
-        fetch("https://worldtimeapi.org/api/ip")
-            .then((response) => response.json())
-            .then((data) => {
+        fetch('https://worldtimeapi.org/api/ip')
+            .then(response => response.json())
+            .then(data => {
                 const currentDate = new Date(data.datetime);
-                const formattedDate = currentDate.toISOString().split("T")[0];
-
+                const formattedDate = currentDate.toISOString().split('T')[0];
+                
                 // Set min attribute to current date
-                quizDateInput.setAttribute("min", formattedDate);
+                quizDateInput.setAttribute('min', formattedDate);
             })
-            .catch((error) => console.error("Error fetching date:", error));
+            .catch(error => console.error('Error fetching date:', error));
     } else {
         quizDateInput.disabled = true;
     }
 });
+

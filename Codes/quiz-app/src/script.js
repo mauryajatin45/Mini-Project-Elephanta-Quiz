@@ -68,7 +68,6 @@ document.querySelectorAll('.menu-item').forEach(item => {
 });
 
 //code to fetch the country code from the server
-
 document.addEventListener('DOMContentLoaded', () => {
   const countryCodeSelect = document.getElementById('countryCode');
 
