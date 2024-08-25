@@ -1,30 +1,41 @@
-<!-- public/quiz.html -->
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Take Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <div class="container" id="quizContainer">
-        <h2 id="quizTitle">Loading Quiz...</h2>
-        <div id="timer">Time Left: <span id="timeLeft">30</span>s</div>
+    <div class="container hidden" id="quizContainer">
+        <div class="quizName">
+            <h2>Quiz Name: </h2>
+            <h2 id="quizTitle"></h2>
+        </div>
+        <div class="timer-container">
+            <div id="circleTimer" class="circle-timer">
+                <span id="timeLeft">30</span>
+            </div>
+            <div id="timerLabel">Time Left</div>
+        </div>
         <div id="questionContainer">
             <p id="questionText"></p>
             <div id="optionsContainer" class="options"></div>
         </div>
-        <button id="nextBtn" class="hidden">Next Question</button>
+        <div class="naviagationbuttons">
+            <button id="prevBtn" class="hidden">Previous</button>
+            <button id="nextBtn" class="hidden">Next Question</button>
+        </div>
     </div>
-
     <div class="container hidden" id="resultContainer">
         <h2>Quiz Completed!</h2>
         <p>Thank you, <span id="studentNameDisplay"></span> for completing the quiz.</p>
         <button id="finishBtn">Finish</button>
     </div>
-
+    <div class="questionUpdate"></div>
     <script src="scripts/quiz.js"></script>
 </body>
+
 </html>

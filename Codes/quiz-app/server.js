@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const Quiz = require('./models/quiz');
+// const UserResponse = require('user_input\models\UserResponse.js'); // Import your UserResponse model
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -98,4 +100,21 @@ app.listen(PORT, () => {
 
 app.get('/debug', (req, res) => {
     res.json({ message: 'Debug route hit successfully' });
+});
+
+app.get('/total-responses', async (req, res) => {
+    try {
+        const totalResponses = await UserResponse.aggregate([
+            { $unwind: "$responses" }, // Unwind responses array to get each response separately
+            { $count: "total" }         // Count the total number of responses
+        ]);
+
+        const count = totalResponses.length > 0 ? totalResponses[0].total : 0;
+        console.log('Total responses count:', count); // For debugging
+
+        res.json({ count }); // Respond with the count as JSON
+    } catch (error) {
+        console.error('Error fetching total responses:', error);
+        res.status(500).json({ error: 'Error fetching total responses' }); // Return error as JSON
+    }
 });

@@ -266,14 +266,18 @@ const fetchQuizCount = async () => {
         const response = await fetch("http://localhost:3000/quiz-count");
         if (!response.ok) throw new Error("Failed to fetch quiz count");
         const data = await response.json();
+        // console.log('Quiz count response data:', data); // Debug log
         const quizCountElement = document.querySelector("#quiz-count");
         if (quizCountElement) {
-            quizCountElement.textContent = `You have successfully completed ${data.count} quiz.`;
+            quizCountElement.textContent = `You have successfully created ${data.count} quiz${data.count > 1 ? 'zes' : ''}.`;
         }
     } catch (error) {
         console.error("Error fetching quiz count:", error);
     }
 };
+
+// Call the function to fetch the quiz count
+fetchQuizCount();
 
 document.getElementById('toggle').addEventListener('change', function() {
     const quizDateInput = document.getElementById('quizDate');
@@ -296,3 +300,19 @@ document.getElementById('toggle').addEventListener('change', function() {
     }
 });
 
+const fetchTotalResponses = async () => {
+    try {
+        const response = await fetch("http://localhost:3000/total-responses");
+        if (!response.ok) throw new Error("Failed to fetch total responses");
+        const data = await response.json();
+        console.log("Total responses data:", data); // For debugging
+        const attendeesElement = document.querySelector("#attendees-count");
+        if (attendeesElement) {
+            attendeesElement.textContent = `You have ${data.count} attendees.`;
+        }
+    } catch (error) {
+        console.error("Error fetching total responses:", error);
+    }
+};
+
+fetchTotalResponses();

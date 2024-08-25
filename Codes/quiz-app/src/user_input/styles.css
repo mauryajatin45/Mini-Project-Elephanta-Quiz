@@ -2,23 +2,50 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background: rgba(104, 11, 255, 0.12);
     margin: 0;
     padding: 0;
 }
 
-.container {
-    width: 100%;
-    max-width: 500px;
-    margin: 100px auto;
-    background-color: #fff;
-    padding: 40px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    border: 1px solid #00000080;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+}
+
+.logo {
+    height: 50px;
+}
+
+.title {
+    color: #333;
+    font-size: 24px;
+    flex: 1;
     text-align: center;
 }
 
-h1, h2 {
+.container {
+    height: 80%;
+    max-width: 50%;
+    margin: 100px auto;
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.521);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+h1,
+h2 {
     margin-bottom: 20px;
 }
 
@@ -63,4 +90,132 @@ button:hover {
 
 .hidden {
     display: none;
+}
+
+.timer-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-timer {
+    width: 70px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(red 0%,
+            green 0% 50%,
+            green 50% 100%);
+    border: 8px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-timer span {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+#timerLabel {
+    font-size: 14px;
+    color: #000000;
+    text-align: center;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .timer-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    .circle-timer {
+        width: 60px;
+        height: 60px;
+    }
+
+    .circle-timer span {
+        font-size: 16px;
+    }
+
+    #timerLabel {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .timer-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .circle-timer {
+        width: 50px;
+        height: 50px;
+    }
+
+    .circle-timer span {
+        font-size: 14px;
+    }
+
+    #timerLabel {
+        font-size: 10px;
+    }
+}
+
+.naviagationbuttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 5%;
+}
+
+.disabled-cursor {
+    cursor: not-allowed;
+}
+
+#questionContainer {
+    background-color: #d0e1ff;
+    width: 90%;
+    border: 1px solid #00000080;
+    border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#questionText {
+    font-size: 20px;
+    padding: 10px;
+    text-align: left;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    width: 80%;
+
+}
+
+.quizName {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: flex;
+}
+
+#quizTitle {
+    font-weight: 500;
 }
