@@ -9,32 +9,43 @@
 </head>
 
 <body>
-    <div class="container hidden" id="quizContainer">
-        <div class="quizName">
-            <h2>Quiz Name: </h2>
-            <h2 id="quizTitle"></h2>
-        </div>
-        <div class="timer-container">
-            <div id="circleTimer" class="circle-timer">
-                <span id="timeLeft">30</span>
+    <main>
+        <section class="container hidden" id="quizContainer">
+            <header class="quizName">
+                <h2>Quiz Name: <span id="quizTitle"></span></h2>
+            </header>
+            <div class="timer-container">
+                <div id="circleTimer" class="circle-timer">
+                    <span id="timeLeft">30</span>
+                </div>
+                <div id="timerLabel">Time Left</div>
             </div>
-            <div id="timerLabel">Time Left</div>
+            <section id="questionContainer">
+                <h3 id="questionText"></h3>
+                <div id="optionsContainer" class="options"></div>
+            </section>
+            <nav class="navigation-buttons">
+                <button id="prevBtn" class="hidden">Previous</button>
+                <button id="nextBtn" class="hidden">Next Question</button>
+                <button id="submitBtn">Submit</button>
+            </nav>
+        </section>
+
+        <div class="questiontracker-instructions">
+            <p><span class="color-indicator green"></span> Green color indicates completed question</p>
+            <p><span class="color-indicator yellow"></span> Yellow color indicates current question</p>
+            <p><span class="color-indicator red"></span> Red color indicates remaining question</p>
+            <h4 style="text-align: center;">Questions : </h4>
+            <div class="questiontracker" id="questiontracker"></div>
         </div>
-        <div id="questionContainer">
-            <p id="questionText"></p>
-            <div id="optionsContainer" class="options"></div>
-        </div>
-        <div class="naviagationbuttons">
-            <button id="prevBtn" class="hidden">Previous</button>
-            <button id="nextBtn" class="hidden">Next Question</button>
-        </div>
-    </div>
-    <div class="container hidden" id="resultContainer">
-        <h2>Quiz Completed!</h2>
-        <p>Thank you, <span id="studentNameDisplay"></span> for completing the quiz.</p>
-        <button id="finishBtn">Finish</button>
-    </div>
-    <div class="questionUpdate"></div>
+
+
+        <section class="container hidden" id="resultContainer">
+            <h2>Quiz Completed!</h2>
+            <p>Thank you, <span id="studentNameDisplay"></span> for completing the quiz.</p>
+        </section>
+    </main>
+
     <script src="scripts/quiz.js"></script>
 </body>
 

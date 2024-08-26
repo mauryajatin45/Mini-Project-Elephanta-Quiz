@@ -6,110 +6,144 @@ const questionText = document.getElementById('questionText');
 const optionsContainer = document.getElementById('optionsContainer');
 const timeLeftSpan = document.getElementById('timeLeft');
 const nextBtn = document.getElementById('nextBtn');
-const prevBtn = document.getElementById('prevBtn'); // Button for previous question
+const prevBtn = document.getElementById('prevBtn');
+const submitBtn = document.getElementById('submitBtn'); // Submit button
 const studentNameDisplay = document.getElementById('studentNameDisplay');
-const finishBtn = document.getElementById('finishBtn');
+const questionTracker = document.getElementById('questiontracker'); // Question tracker container
 
 // Variables to manage quiz state
-let quizData = null; // Holds the quiz data fetched from the server
-let currentQuestionIndex = 0; // Index of the current question being displayed
-let timer = null; // Timer for tracking question time
+let quizData = null; // Stores quiz data fetched from the server
+let currentQuestionIndex = 0; // Index of the current question
+let timer = null; // Timer object
 let timeLeft = 30; // Time left for the current question
-let studentName = localStorage.getItem('studentName') || 'Student'; // Student's name from local storage or default
-let responses = []; // Array to store student responses
-let pausedTimeLeft = null; // Track time left when a question is paused
+let studentName = localStorage.getItem('studentName') || 'Student'; // Student's name
+let responses = []; // Array to store responses
+let pausedTimeLeft = null; // Time left when the timer is paused
 
 // Event listener for when the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', async () => {
-    studentNameDisplay.textContent = studentName; // Display the student's name
-    await fetchQuiz(); // Fetch quiz data from the server
+    studentNameDisplay.textContent = studentName; // Display student's name
+    await fetchQuiz(); // Fetch and display the quiz data
 
-    // Show the quiz container after quiz data is fetched
     if (quizData && quizData.questions.length > 0) {
-        quizContainer.classList.remove('hidden');
-        startQuestion(); // Start the first question
+        quizContainer.classList.remove('hidden'); // Show the quiz container
+        startQuestion(); // Start the quiz with the first question
+        initializeQuestionTracker(); // Initialize question tracker
     }
 });
 
-// Event listener for the "Next" button to move to the next question
+// Event listener for the "Next" button
 nextBtn.addEventListener('click', () => {
-    saveResponse(); // Save the current question's response
+    saveResponse(); // Save the current response
     currentQuestionIndex++; // Move to the next question
     if (currentQuestionIndex < quizData.questions.length) {
         startQuestion(); // Display the next question
     } else {
-        endQuiz(); // End the quiz if all questions have been answered
+        endQuiz(); // End the quiz if there are no more questions
     }
+    updateQuestionTracker(); // Update question tracker
 });
 
-// Event listener for the "Previous" button to move to the previous question
+// Event listener for the "Previous" button
 prevBtn.addEventListener('click', () => {
-    saveResponse(); // Save the current question's response
+    saveResponse(); // Save the current response
     if (currentQuestionIndex > 0) {
         currentQuestionIndex--; // Move to the previous question
         startQuestion(); // Display the previous question
     }
+    updateQuestionTracker(); // Update question tracker
 });
 
-// Event listener for the "Finish" button to navigate back to the homepage
-finishBtn.addEventListener('click', () => {
-    window.location.href = 'index.html'; // Redirect to the homepage
+// Event listener for the "Submit" button
+submitBtn.addEventListener('click', () => {
+    saveResponse(); // Save the current response
+    endQuiz(); // End the quiz and submit responses
 });
 
-// Function to fetch the latest quiz data from the server
+/**
+ * Fetches quiz data from the server and initializes the quiz.
+ */
 async function fetchQuiz() {
     try {
-        const response = await fetch('http://localhost:5000/api/latest-quiz'); // Updated URL
+        const response = await fetch('http://localhost:5000/api/latest-quiz');
         if (!response.ok) throw new Error('Failed to fetch quiz data');
-
         quizData = await response.json();
         if (!quizData || !quizData.questions || quizData.questions.length === 0) {
             throw new Error('Invalid quiz data');
         }
-
-        quizTitle.textContent = quizData.name;
+        quizTitle.textContent = quizData.name; // Set the quiz title
     } catch (error) {
-        alert('Error loading quiz: ' + error.message);
+        alert('Error loading quiz: ' + error.message); // Show an error message if fetching fails
     }
 }
 
-// Function to start displaying a question and its timer
+/**
+ * Initializes the question tracker.
+ */
+function initializeQuestionTracker() {
+    if (!quizData || !quizData.questions.length) return;
+
+    questionTracker.innerHTML = ''; // Clear previous tracker content
+    quizData.questions.forEach((_, index) => {
+        const box = document.createElement('div');
+        box.classList.add('tracker-box');
+        box.dataset.index = index;
+        questionTracker.appendChild(box);
+    });
+}
+
+/**
+ * Updates the question tracker based on completed questions.
+ */
+function updateQuestionTracker() {
+    const boxes = questionTracker.querySelectorAll('.tracker-box');
+    boxes.forEach((box, index) => {
+        if (index < currentQuestionIndex) {
+            box.style.backgroundColor = 'green'; // Completed question
+        } else if (index === currentQuestionIndex) {
+            box.style.backgroundColor = 'yellow'; // Current question
+        } else {
+            box.style.backgroundColor = 'red'; // Upcoming question
+        }
+    });
+}
+
+/**
+ * Starts displaying the current question and timer.
+ */
 function startQuestion() {
     if (!quizData || currentQuestionIndex < 0 || currentQuestionIndex >= quizData.questions.length) {
         console.error('Invalid question index');
         return;
     }
-
-    resetTimer(); // Reset timer for the new question
+    resetTimer(); // Reset the timer
     displayQuestion(); // Display the current question
     startTimer(); // Start the timer
 }
 
+/**
+ * Displays the current question and its options.
+ */
 function displayQuestion() {
     if (!quizData || currentQuestionIndex < 0 || currentQuestionIndex >= quizData.questions.length) {
         console.error('Invalid question index');
         return;
     }
 
-    const question = quizData.questions[currentQuestionIndex]; // Get the current question
+    const question = quizData.questions[currentQuestionIndex];
     if (!question) {
         console.error('Question is undefined');
         return;
     }
 
-    // Format question number (1-based index)
     const questionNumber = currentQuestionIndex + 1;
-
-    // Display the question text with the question number
     questionText.innerHTML = `<strong>Question ${questionNumber}:</strong> ${question.questionText}`;
-
     optionsContainer.innerHTML = ''; // Clear previous options
 
-    // Check if we have a saved response for the current question
     const savedResponse = responses.find(response => response.questionId === question._id);
-    
+
     if (savedResponse && !isCurrentQuestion()) {
-        // If there's a saved response and it's not the current question, show it as read-only
+        // Display saved response as disabled options
         if (question.questionType === 'MCQ') {
             question.options.forEach((option) => {
                 const optionElement = document.createElement('div');
@@ -131,11 +165,11 @@ function displayQuestion() {
             inputElement.style.width = '100%';
             inputElement.style.padding = '10px';
             inputElement.style.fontSize = '16px';
-            inputElement.disabled = true; // Make it read-only
+            inputElement.disabled = true;
             optionsContainer.appendChild(inputElement);
         }
     } else {
-        // Display options normally if it's the current question
+        // Display current options
         if (question.questionType === 'MCQ' && question.options.length) {
             question.options.forEach((option) => {
                 const optionElement = document.createElement('div');
@@ -160,13 +194,14 @@ function displayQuestion() {
         }
     }
 
-    // Adjust visibility of Previous, Next, and Finish buttons
+    // Toggle visibility of navigation buttons
     prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
     nextBtn.classList.toggle('hidden', currentQuestionIndex >= quizData.questions.length - 1);
-    finishBtn.classList.toggle('hidden', currentQuestionIndex < quizData.questions.length - 1);
 }
 
-// Function to start the countdown timer for the current question
+/**
+ * Starts the timer for the current question.
+ */
 function startTimer() {
     if (!quizData) {
         console.error('Quiz data is not loaded');
@@ -174,39 +209,41 @@ function startTimer() {
     }
 
     if (pausedTimeLeft !== null) {
-        timeLeft = pausedTimeLeft; // Resume with the paused time left
+        timeLeft = pausedTimeLeft;
         pausedTimeLeft = null;
     } else {
-        timeLeft = quizData.timeLimit || 30; // Set timer duration
+        timeLeft = quizData.timeLimit || 30;
     }
-    timeLeftSpan.textContent = timeLeft; // Display initial time left
-    updateCircleTimer(timeLeft); // Update the circle timer
+    timeLeftSpan.textContent = timeLeft;
+    updateCircleTimer(timeLeft);
 
-    // Timer interval to update time left every second
     timer = setInterval(() => {
         timeLeft--;
         timeLeftSpan.textContent = timeLeft;
         updateCircleTimer(timeLeft);
 
         if (timeLeft <= 0) {
-            clearInterval(timer); // Stop the timer when time is up
-            saveResponse(); // Save the response
-            currentQuestionIndex++; // Move to the next question
+            clearInterval(timer);
+            saveResponse();
+            currentQuestionIndex++;
             if (currentQuestionIndex < quizData.questions.length) {
-                startQuestion(); // Display the next question
+                startQuestion();
             } else {
-                endQuiz(); // End the quiz if all questions are answered
+                endQuiz();
             }
         }
     }, 1000);
 }
 
-// Function to update the circular timer's progress
+/**
+ * Updates the visual representation of the timer.
+ * @param {number} timeLeft - The time left in seconds.
+ */
 function updateCircleTimer(timeLeft) {
-    const totalTime = quizData.timeLimit || 30; // Total time for the question
-    const percentage = (timeLeft / totalTime) * 100; // Calculate the percentage of remaining time
+    const totalTime = quizData.timeLimit || 30;
+    const percentage = (timeLeft / totalTime) * 100;
     const circleTimer = document.getElementById('circleTimer');
-    
+
     if (circleTimer) {
         circleTimer.style.background = `conic-gradient(
             red ${100 - percentage}%,
@@ -217,23 +254,26 @@ function updateCircleTimer(timeLeft) {
     }
 }
 
-// Function to reset the timer when a new question starts
+/**
+ * Resets the timer to the initial state.
+ */
 function resetTimer() {
-    clearInterval(timer); // Stop any existing timer
-    timeLeft = quizData.timeLimit || 30; // Reset time left for the next question
-    timeLeftSpan.textContent = timeLeft; // Update the displayed time
-    updateCircleTimer(timeLeft); // Reset the circular timer
+    clearInterval(timer);
+    timeLeft = quizData.timeLimit || 30;
+    timeLeftSpan.textContent = timeLeft;
+    updateCircleTimer(timeLeft);
 }
 
-
-// Function to save the student's response for the current question
+/**
+ * Saves the current response to the responses array.
+ */
 function saveResponse() {
     if (!quizData || currentQuestionIndex < 0 || currentQuestionIndex >= quizData.questions.length) {
         console.error('Invalid question index');
         return;
     }
 
-    const question = quizData.questions[currentQuestionIndex]; // Get the current question
+    const question = quizData.questions[currentQuestionIndex];
     if (!question) {
         console.error('Question is undefined');
         return;
@@ -242,18 +282,15 @@ function saveResponse() {
     let answer = '';
 
     if (question.questionType === 'MCQ') {
-        // Get selected MCQ option
         const selectedOption = document.querySelector('input[name="option"]:checked');
         answer = selectedOption ? selectedOption.value : 'No Answer';
     } else if (question.questionType === 'Short') {
-        // Get short answer input
         const shortAnswer = document.querySelector('input[name="shortAnswer"]').value.trim();
         answer = shortAnswer || 'No Answer';
     }
 
-    const timeTaken = (quizData.timeLimit || 30) - timeLeft; // Calculate time taken for the question
+    const timeTaken = (quizData.timeLimit || 30) - timeLeft;
 
-    // Store the response
     const existingResponseIndex = responses.findIndex(response => response.questionId === question._id);
     if (existingResponseIndex >= 0) {
         responses[existingResponseIndex] = {
@@ -270,31 +307,24 @@ function saveResponse() {
     }
 }
 
-// Function to handle the end of the quiz
+/**
+ * Ends the quiz and shows the result.
+ */
 function endQuiz() {
-    clearInterval(timer); // Stop the timer
-    quizContainer.classList.add('hidden'); // Hide the quiz container
-    resultContainer.classList.remove('hidden'); // Show the result container
-
-    // Set student's name in result container
+    clearInterval(timer);
+    quizContainer.classList.add('hidden');
+    resultContainer.classList.remove('hidden');
     studentNameDisplay.textContent = studentName;
 
-    // Check if the quiz is completed and manage visibility of completion-container
-    const quizCompleted = responses.length === quizData.questions.length; // Example condition
-    if (quizCompleted) {
-        document.getElementById('completion-container').classList.remove('hidden');
-    } else {
-        document.getElementById('completion-container').classList.add('hidden');
-    }
-
-    // Submit responses to the server
-    submitResponses();
+    submitResponses(); // Submit responses to the server
 }
 
-// Function to submit all responses to the server
+/**
+ * Submits the responses to the server.
+ */
 async function submitResponses() {
     try {
-        const response = await fetch('http://localhost:5000/api/submit-responses', { // Updated URL
+        const response = await fetch('http://localhost:5000/api/submit-responses', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -310,8 +340,6 @@ async function submitResponses() {
 
         const result = await response.json();
         console.log(result.message);
-
-        // Display a success message
         resultContainer.innerHTML += '<p>Responses submitted successfully!</p>';
     } catch (error) {
         console.error('Error submitting responses:', error);
@@ -319,9 +347,10 @@ async function submitResponses() {
     }
 }
 
-// Helper function to check if the current question is editable
+/**
+ * Checks if the current question is already answered.
+ * @returns {boolean} - True if the current question is answered, false otherwise.
+ */
 function isCurrentQuestion() {
-    return currentQuestionIndex === responses.find(response => response.questionId === quizData.questions[currentQuestionIndex]._id)?.questionId;
+    return responses.some(response => response.questionId === quizData.questions[currentQuestionIndex]._id);
 }
-
-// 
