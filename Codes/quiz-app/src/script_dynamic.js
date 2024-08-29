@@ -299,20 +299,3 @@ document.getElementById('toggle').addEventListener('change', function() {
         quizDateInput.disabled = true;
     }
 });
-
-const fetchTotalResponses = async () => {
-    try {
-        const response = await fetch("http://localhost:3000/total-responses");
-        if (!response.ok) throw new Error("Failed to fetch total responses");
-        const data = await response.json();
-        console.log("Total responses data:", data); // For debugging
-        const attendeesElement = document.querySelector("#attendees-count");
-        if (attendeesElement) {
-            attendeesElement.textContent = `You have ${data.count} attendees.`;
-        }
-    } catch (error) {
-        console.error("Error fetching total responses:", error);
-    }
-};
-
-fetchTotalResponses();

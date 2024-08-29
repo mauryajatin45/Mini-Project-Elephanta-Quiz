@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elephanta Quiz</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="respinsive.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" href="../Images/elephanta's_E.png">
@@ -25,7 +26,7 @@
             <img src="../Images/Dropdown.png" alt="DropDown" />
         </div>
     </div>
-
+    
     <div class="hamburger-menu">
         <div class="hamburger-icon">
             <span></span>
@@ -112,6 +113,7 @@
                         <input type="text" name="quizName" placeholder="Quiz Name" class="name_of_quiz">
                         <img src="../Images/Pen icon.png" alt="quiz name symbol" class="quiznameimg">
                     </div>
+            
                     <div class="white-container">
                         <div class="blue-container">
                             <div class="main-details">
@@ -121,11 +123,9 @@
                                         <input type="checkbox" id="toggle">
                                         <span class="slider round"></span>
                                     </label>
-                                    <input type="date" id="quizDate" name="scheduleDate" class="disabled-cursor"
-                                        disabled>
+                                    <input type="date" id="quizDate" name="scheduleDate" class="disabled-cursor" disabled>
                                 </div>
-
-
+            
                                 <div class="time-limited">
                                     <h2 style="user-select: none;">Do you want to set time limit?</h2>
                                     <label class="switch">
@@ -141,22 +141,23 @@
                                     </select>
                                 </div>
                             </div>
-
+            
                             <div class="white-container-2">
-                                <h2>Your Questions:-</h2>
+                                <h2>Your Questions:</h2>
                                 <div id="question-container"></div>
                                 <div class="add-questions">
                                     <button type="button" id="add-short-question">Add Short Question</button>
                                     <button type="button" id="add-mcq-question">Add MCQ Question</button>
                                 </div>
                             </div>
+                            
                             <div id="feedback" style="display:none;"></div>
                             <button type="submit" id="submit">Create Quiz</button>
                         </div>
                     </div>
                 </form>
-
             </div>
+            
 
             <div class="page" id="profile-page">
                 <div class="profilearea">
