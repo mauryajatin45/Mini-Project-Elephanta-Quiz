@@ -864,3 +864,11 @@ select {
   background-color: rgb(255, 69, 69);
 
 }
+
+#profile_name{
+  margin: 0;
+  display: flex;
+  align-items: center;
+  animation: none;
+  transition: none;
+}

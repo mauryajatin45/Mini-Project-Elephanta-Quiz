@@ -3,64 +3,177 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const toggleBtn = document.getElementById('toggle-btn');
     const toggleText = document.getElementById('toggle-text');
+    const additionalInfo = document.getElementById('additional-info');
+    const countrySelect = document.getElementById('country');
+    const stateSelect = document.getElementById('state');
 
-    let isLogin = false; // To toggle between login and sign-up
+    let isLogin = false;
 
     const toggleForm = () => {
         isLogin = !isLogin;
-        if (isLogin) {
-            formContainer.querySelector('h2').textContent = 'Log In';
-            submitBtn.textContent = 'Log In';
-            toggleText.textContent = "Don't have an account?";
-            toggleBtn.textContent = 'Sign Up';
-        } else {
-            formContainer.querySelector('h2').textContent = 'Sign Up';
-            submitBtn.textContent = 'Sign Up';
-            toggleText.textContent = 'Already have an account?';
-            toggleBtn.textContent = 'Log In';
+        updateFormUI();
+    };
+
+    const updateFormUI = () => {
+        formContainer.querySelector('h2').textContent = isLogin ? 'Log In' : 'Sign Up';
+        submitBtn.textContent = isLogin ? 'Log In' : 'Sign Up';
+        toggleText.textContent = isLogin ? "Don't have an account?" : 'Already have an account?';
+        toggleBtn.textContent = isLogin ? 'Sign Up' : 'Log In';
+        additionalInfo.style.display = isLogin ? 'none' : 'block'; // Show additional info on sign-up
+    };
+
+    const signUp = async (userData) => {
+        console.log(userData); // Log user data to console
+        try {
+            const response = await fetch('http://localhost:5000/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (response.status === 201) {
+                toggleForm();
+            }
+        } catch (error) {
+            alert('Error during sign up');
+            console.error('Error details:', error);
+        }
+    };
+    
+    const logIn = async (userData) => {
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (response.status === 200) {
+                window.location.href = 'index.html'; // Redirect to landing page
+            }
+        } catch (error) {
+            alert('Error during login');
+            console.error('Login error:', error);
         }
     };
 
-    const signUp = (username, password) => {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const userExists = users.some(user => user.username === username);
+    const handleGoogleSignIn = async (response) => {
+        const user = response.credential; // JWT token
+        const userInfo = JSON.parse(atob(user.split('.')[1])); // Decode JWT
 
-        if (userExists) {
-            alert('Username already exists. Please choose a different one.');
-        } else {
-            users.push({ username, password });
-            localStorage.setItem('users', JSON.stringify(users));
-            alert('Sign up successful! Please log in.');
-            toggleForm();
+        try {
+            const res = await fetch('http://localhost:5000/google-login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: userInfo.sub, email: userInfo.email, name: userInfo.name }),
+            });
+            const data = await res.json();
+            alert(data.message);
+            if (res.status === 200) {
+                window.location.href = 'index.html'; // Redirect to landing page
+            }
+        } catch (error) {
+            alert('Error during Google login');
+            console.error('Google login error:', error);
         }
     };
 
-    const logIn = (username, password) => {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const user = users.find(user => user.username === username && user.password === password);
-
-        if (user) {
-            alert('Login successful! Welcome back.');
-            window.location.href = 'index.html'; // Redirect to the new page
-        } else {
-            alert('Invalid username or password.');
+    const fetchCountries = async () => {
+        try {
+            const response = await fetch('https://restcountries.com/v3.1/all');
+            const countries = await response.json();
+            countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.cca2; // Use country code
+                option.textContent = country.name.common;
+                countrySelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching countries:', error);
         }
     };
+
+    const fetchStates = async (countryCode) => {
+        // Clear previous states
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        stateSelect.style.display = 'none';
+    
+        const countryGeonameId = {
+            'US': '6252001', // USA
+            'CA': '6252002', // Canada
+            // Add more countries and their geonameId as needed
+        };
+    
+        if (countryCode in countryGeonameId) {
+            try {
+                const response = await fetch(`http://api.geonames.org/childrenJSON?geonameId=${countryGeonameId[countryCode]}&username=YOUR_USERNAME`);
+                const data = await response.json();
+                const states = data.geonames; // Assuming the response contains 'geonames'
+    
+                states.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state.geonameId; // Assuming state object has 'geonameId'
+                    option.textContent = state.name; // Assuming state object has 'name'
+                    stateSelect.appendChild(option);
+                });
+                stateSelect.style.display = 'block';
+            } catch (error) {
+                console.error('Error fetching states:', error);
+            }
+        }
+    };
+    
+    // Event listeners
+    countrySelect.addEventListener('change', (e) => {
+        const countryCode = e.target.value;
+        fetchStates(countryCode);
+    });
 
     submitBtn.addEventListener('click', () => {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        if (username && password) {
-            if (isLogin) {
-                logIn(username, password);
-            } else {
-                signUp(username, password);
-            }
+        if (isLogin) {
+            logIn({ username, password });
         } else {
-            alert('Please fill in both fields.');
+            const name = document.getElementById('name').value;
+            const surname = document.getElementById('surname').value;
+            const mobile = document.getElementById('mobile').value;
+            const email = document.getElementById('email').value;
+            const dob = document.getElementById('dob').value;
+            const country = countrySelect.value;
+
+            if (username && password && name && surname && mobile && email && dob && country) {
+                signUp({ username, password, name, surname, mobile, email, dob, country });
+            } else {
+                alert('Please fill in all fields.');
+            }
         }
     });
 
     toggleBtn.addEventListener('click', toggleForm);
+
+    // Google Sign-In Initialization
+    function initializeGoogleSignIn() {
+        google.accounts.id.initialize({
+            client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com', // Replace with your actual client ID
+            callback: handleGoogleSignIn
+        });
+        google.accounts.id.renderButton(
+            document.getElementById('google-signin-button'),
+            { theme: 'outline', size: 'large' }
+        );
+    }
+
+    // Fetch countries on page load
+    fetchCountries();
+
+    // Initialize the form to show sign-up by default
+    updateFormUI();
+
+    // Initialize Google Sign-In
+    window.onload = initializeGoogleSignIn;
 });

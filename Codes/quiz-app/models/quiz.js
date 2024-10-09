@@ -19,7 +19,7 @@ const questionSchema = new mongoose.Schema({
 const quizSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: false
     },
     scheduleDate: Date,
     timeLimit: Number,

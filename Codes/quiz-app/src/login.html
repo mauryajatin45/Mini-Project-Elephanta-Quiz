@@ -1,74 +1,33 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Sign Up</title>
-
-    <!-- Google Identity Services Script -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        .container {
-            width: 300px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-        h2 {
-            text-align: center;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            box-sizing: border-box;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background-color: #28a745;
-            color: white;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .toggle {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .toggle button {
-            background-color: #007bff;
-        }
-        .toggle button:hover {
-            background-color: #0069d9;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container" id="form-container">
-        <h2>Sign Up</h2>
+        <h2 id="form-title">Sign Up</h2>
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
-        <button id="submit-btn">Sign Up</button>
 
-        <!-- Google Sign-In button -->
+        <div id="additional-info" style="display: none;">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="text" id="surname" placeholder="Surname" required>
+            <input type="text" id="mobile" placeholder="Mobile No." required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="date" id="dob" placeholder="Date of Birth" required>
+            <select id="country" required>
+                <option value="">Select Country</option>
+            </select>
+            <select id="state" required style="display: none;">
+                <option value="">Select State</option>
+            </select>
+        </div>
+
+        <button id="submit-btn">Sign Up</button>
         <div id="google-signin-button"></div>
 
         <div class="toggle">
@@ -77,35 +36,7 @@
         </div>
     </div>
 
-    <script>
-       function initializeGoogleSignIn() {
-            google.accounts.id.initialize({
-                client_id: '1074089808265-8a8e099gkpiu0mhh5cueqn3dr0mqn1b4.apps.googleusercontent.com',
-                callback: onSignIn
-            });
-            google.accounts.id.renderButton(
-                document.getElementById('google-signin-button'),
-                { theme: 'outline', size: 'large' }
-            );
-        }
-
-        // On Sign-In callback
-        function onSignIn(response) {
-            const user = response.credential; // JWT token
-            const userInfo = JSON.parse(atob(user.split('.')[1])); // Decode JWT
-
-            console.log('User ID:', userInfo.sub);
-            console.log('User Name:', userInfo.name);
-            console.log('User Email:', userInfo.email);
-
-            alert('Logged in as ' + userInfo.name);
-            window.location.href = 'index.html'; // Redirect after successful login
-        }
-
-        // Call this function when the page loads
-        window.onload = function() {
-            initializeGoogleSignIn();
-        };
-    </script>
+    <script src="login.js"></script>
+    
 </body>
 </html>
