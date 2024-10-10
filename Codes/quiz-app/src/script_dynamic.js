@@ -4,7 +4,6 @@ let mcqQuestionCount = 0;
 let questionNumbering = 0;
 const BASE_URL = "http://localhost:3000";
 
-
 // Function to create a new short question
 const addShortQuestion = () => {
     const container = document.getElementById("question-container");
@@ -60,6 +59,7 @@ const addMCQQuestion = () => {
     container.appendChild(div);
 };
 
+// Function to delete a question
 const deleteQuestion = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -72,20 +72,21 @@ const deleteQuestion = (id) => {
 document.getElementById("add-short-question").addEventListener("click", addShortQuestion);
 document.getElementById("add-mcq-question").addEventListener("click", addMCQQuestion);
 
+// Handle form submission
 const handleFormSubmit = async (event) => {
     event.preventDefault();  // Prevent default form submission behavior
     event.stopPropagation(); // Stop event from bubbling up
     const form = event.target;
 
-    // Collect form data and populate the data object
+    // Collect form data and prepare the data object
     const formData = new FormData(form);
-    const data = { questions: [] };  // Initialize data object to hold quiz details
+    const data = { questions: [] };
 
     let hasError = false;
 
+    // Collect the questions from the form
     formData.forEach((value, key) => {
         if (key.startsWith("short-question-")) {
-            // Collect short questions
             if (!value) {
                 hasError = true;
                 form.querySelector(`input[name="${key}"]`).classList.add("error");
@@ -93,7 +94,6 @@ const handleFormSubmit = async (event) => {
             }
             data.questions.push({ questionText: value, questionType: "Short", options: [], correctAnswer: "" });
         } else if (key.startsWith("mcq-question-")) {
-            // Collect MCQ questions and their options
             const questionIndex = key.match(/\d+$/)[0];
             const options = ["1", "2", "3", "4"].map(opt => formData.get(`option${opt}-${questionIndex}`)).filter(Boolean);
             if (options.length < 2) {
@@ -112,54 +112,52 @@ const handleFormSubmit = async (event) => {
 
     try {
         // Collect additional fields for the quiz
-        const name = document.getElementById('quizName').value;  // Get the quiz name
+        const name = document.getElementById('quizName').value;
         const scheduleDate = document.getElementById('quizDate').value;
         const timeLimit = document.getElementById('quizTime').value;
 
         // Include quiz details in the data object
-        data.name = name || `Quiz-${new Date().toISOString()}`;  // Assign default name if not provided
+        data.name = name || `Quiz-${new Date().toISOString()}`;
         data.scheduleDate = scheduleDate;
         data.timeLimit = timeLimit;
 
-        console.log("Data to be sent:", data);
-
-        // Send data to the backend server using the API endpoint
+        // Send data to the backend server
         const response = await fetch(`${BASE_URL}/submit-quiz`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),  // Convert data to JSON and send it
+            body: JSON.stringify(data),
         });
 
-        const result = await response.text();  // Get response text
+        const result = await response.text();
         const feedbackDiv = document.getElementById("feedback");
 
         // Display feedback message
-        feedbackDiv.textContent = result;  // Show success or error message
-        feedbackDiv.style.color = response.ok ? "green" : "red";  // Green for success, red for error
-        feedbackDiv.style.display = "block";  // Make feedback visible
+        feedbackDiv.textContent = result;
+        feedbackDiv.style.color = response.ok ? "green" : "red";
+        feedbackDiv.style.display = "block";
 
         // Optionally reset the form after successful submission
         if (response.ok) {
-            form.reset();  // Reset the form fields
+            form.reset();
             questionNumbering = 0;
             shortQuestionCount = 0;
             mcqQuestionCount = 0;
-            document.getElementById("question-container").innerHTML = "";  // Clear question container
+            document.getElementById("question-container").innerHTML = ""; // Clear question container
         }
 
     } catch (error) {
         console.error("Fetch error:", error);
         const feedbackDiv = document.getElementById("feedback");
         feedbackDiv.textContent = "An error occurred. Please try again.";
-        feedbackDiv.style.color = "red";  // Display error message in red
-        feedbackDiv.style.display = "block";  // Make feedback visible
+        feedbackDiv.style.color = "red";
+        feedbackDiv.style.display = "block";
     }
 };
 
-// Use the correct form ID for attaching the event listener
-document.getElementById("quiz-form-create").addEventListener("submit", handleFormSubmit);
+// Attach event listener for form submission
+document.getElementById("quiz-form").addEventListener("submit", handleFormSubmit);
 
-
+// Function to fetch quizzes and populate the table with clickable names
 // Function to fetch quizzes and populate the table with clickable names
 const fetchQuizzes = async () => {
     try {
@@ -172,82 +170,119 @@ const fetchQuizzes = async () => {
 
         quizzes.forEach((quiz) => {
             const row = document.createElement("tr");
-
             const nameCell = document.createElement("td");
+            const dateCell = document.createElement("td");
+
+            // Create a link element for the quiz name and add click event to fetch quiz details
             const link = document.createElement("a");
             link.href = "#";
             link.textContent = quiz.name;
-            link.addEventListener("click", () => fetchQuizDetails(quiz._id)); // Fetch quiz details on click
+            link.addEventListener("click", () => fetchQuizDetailsAndDisplay(quiz._id, row)); // Fetch quiz details on click
             nameCell.appendChild(link);
 
-            const dateCell = document.createElement("td");
             dateCell.textContent = new Date(quiz.createdAt).toLocaleString();
-
             row.appendChild(nameCell);
             row.appendChild(dateCell);
 
             quizTableBody.appendChild(row);
         });
+
+        // Call fetchQuizCount after quizzes have been fetched and displayed
+        fetchQuizCount(); // Call this to update the count
     } catch (err) {
         console.error("Error fetching quizzes:", err);
     }
 };
 
-// Fetch quizzes on page load
-window.onload = fetchQuizzes;
+// Function to fetch quiz count
+const fetchQuizCount = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/quiz-count`);
+        if (!response.ok) throw new Error("Failed to fetch quiz count");
+        const data = await response.json();
+        const quizCountElement = document.querySelector("#quiz-count");
+        if (quizCountElement) {
+            quizCountElement.textContent = `You have successfully created ${data.count} quiz${data.count > 1 ? 'es' : ''}.`;
+            quizCountElement.style.display = data.count ? "block" : "none"; // Hide if count is 0
+        }
+    } catch (error) {
+        console.error("Error fetching quiz count:", error);
+    }
+};
 
-// Function to fetch quiz details by ID and display them in a read-only form
-const fetchQuizDetails = async (quizId) => {
+// Function to fetch and display the latest quiz
+const fetchLatestQuiz = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/latest-quiz`);
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const latestQuiz = await response.json();
+        const latestQuizDisplay = document.querySelector('.underline');
+
+        // Update the text content with the latest quiz name
+        latestQuizDisplay.textContent = latestQuiz.name || "No quizzes created yet"; // Fallback if name is empty
+
+    } catch (error) {
+        console.error("Error fetching latest quiz:", error);
+        // Optionally handle error display
+        const latestQuizDisplay = document.querySelector('.underline');
+        latestQuizDisplay.textContent = "Error fetching latest quiz"; // Display error message
+    }
+};
+
+// Call the fetchLatestQuiz function when the page loads
+window.onload = () => {
+    fetchQuizzes();  // Fetch quizzes as before
+    fetchLatestQuiz(); // Fetch the latest quiz
+};
+
+
+
+// Function to fetch quiz details by ID and display them below the clicked row
+const fetchQuizDetailsAndDisplay = async (quizId, row) => {
     try {
         const url = `${BASE_URL}/quiz/${quizId}`;
-        console.log(`Fetching quiz details from: ${url}`);
         const response = await fetch(url);
-        const contentType = response.headers.get("content-type");
+        if (!response.ok) throw new Error("Network response was not ok");
 
-        if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.statusText}`);
-        }
-
-        if (contentType && contentType.includes("application/json")) {
-            const quiz = await response.json();
-            displayQuizDetails(quiz);
-        } else {
-            console.error("Expected JSON, but received:", await response.text());
-        }
+        const quiz = await response.json();
+        displayQuizDetailsBelowRow(quiz, row);
     } catch (err) {
         console.error("Error fetching quiz details:", err);
     }
 };
 
-const displayQuizDetails = (quiz) => {
-    const form = document.getElementById("quiz-details-form");
-    form.innerHTML = ""; // Clear any previous quiz details
+// Function to display quiz details below the clicked row in a read-only format
+const displayQuizDetailsBelowRow = (quiz, row) => {
+    const existingDetailsRow = document.querySelector(".quiz-details-row");
+    if (existingDetailsRow) {
+        existingDetailsRow.remove();
+    }
+
+    const detailsRow = document.createElement("tr");
+    detailsRow.className = "quiz-details-row";
+    const detailsCell = document.createElement("td");
+    detailsCell.colSpan = 2; // Make the details cell span across both columns
+
+    const detailsContainer = document.createElement("div");
+    detailsContainer.className = "quiz-details-container";
 
     const title = document.createElement("h3");
-    title.textContent = quiz.name;
-    form.appendChild(title);
+    title.textContent = `Quiz Name: ${quiz.name}`;
+    detailsContainer.appendChild(title);
 
-    // Display scheduled date if available
     if (quiz.scheduleDate) {
         const scheduleDateDiv = document.createElement("div");
-        scheduleDateDiv.innerHTML = `
-            <label style="font-weight: bold;">Scheduled Date:</label>
-            <span>${new Date(quiz.scheduleDate).toLocaleString()}</span>
-        `;
-        form.appendChild(scheduleDateDiv);
+        scheduleDateDiv.innerHTML = `<strong>Scheduled Date:</strong> ${new Date(quiz.scheduleDate).toLocaleString()}`;
+        detailsContainer.appendChild(scheduleDateDiv);
     }
 
-    // Display time limit if available
     if (quiz.timeLimit) {
         const timeLimitDiv = document.createElement("div");
-        timeLimitDiv.innerHTML = `
-            <label style="font-weight: bold;">Time Limit:</label>
-            <span>${quiz.timeLimit} Seconds per question</span>
-        `;
-        form.appendChild(timeLimitDiv);
+        timeLimitDiv.innerHTML = `<strong>Time Limit:</strong> ${quiz.timeLimit} Seconds per question`;
+        detailsContainer.appendChild(timeLimitDiv);
     }
 
-    // Display questions
     quiz.questions.forEach((question, index) => {
         const questionDiv = document.createElement("div");
         questionDiv.className = question.questionType === "MCQ" ? "mcq-question" : "short-question";
@@ -276,50 +311,10 @@ const displayQuizDetails = (quiz) => {
             });
         }
 
-        form.appendChild(questionDiv);
+        detailsContainer.appendChild(questionDiv);
     });
 
-    // Show the quiz details form
-    document.getElementById("quiz-details-container").style.display = "block";
+    detailsCell.appendChild(detailsContainer);
+    detailsRow.appendChild(detailsCell);
+    row.parentNode.insertBefore(detailsRow, row.nextSibling);
 };
-
-// Function to fetch quiz count
-const fetchQuizCount = async () => {
-    try {
-        const response = await fetch(`${BASE_URL}/quiz-count`);
-        if (!response.ok) throw new Error("Failed to fetch quiz count");
-        const data = await response.json();
-        const quizCountElement = document.querySelector("#quiz-count");
-        if (quizCountElement) {
-            quizCountElement.textContent = `You have successfully created ${data.count} quiz${data.count > 1 ? 'zes' : ''}.`;
-            quizCountElement.style.display = data.count ? "block" : "none"; // Hide if count is 0
-        }
-    } catch (error) {
-        console.error("Error fetching quiz count:", error);
-    }
-};
-
-// Call the function to fetch the quiz count
-fetchQuizCount();
-
-// Toggle schedule date input
-document.getElementById('toggle').addEventListener('change', function() {
-    const quizDateInput = document.getElementById('quizDate');
-    if (this.checked) {
-        quizDateInput.disabled = false;
-
-        // Fetch current date from the internet
-        fetch('https://worldtimeapi.org/api/ip')
-            .then(response => response.json())
-            .then(data => {
-                const currentDate = new Date(data.datetime);
-                const formattedDate = currentDate.toISOString().split('T')[0];
-                
-                // Set min attribute to current date
-                quizDateInput.setAttribute('min', formattedDate);
-            })
-            .catch(error => console.error('Error fetching date:', error));
-    } else {
-        quizDateInput.disabled = true;
-    }
-});

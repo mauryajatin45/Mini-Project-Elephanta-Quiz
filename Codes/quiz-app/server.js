@@ -119,6 +119,19 @@ app.get('/api/user', async (req, res) => {
     }
 });
 
+// Route to fetch the latest quiz
+app.get('/latest-quiz', async (req, res) => {
+    try {
+        const latestQuiz = await Quiz.findOne().sort({ createdAt: -1 }); // Get the most recently created quiz
+        if (!latestQuiz) return res.status(404).json({ message: 'No quizzes found' }); // Handle case with no quizzes
+        res.json(latestQuiz); // Send the latest quiz as JSON
+    } catch (error) {
+        console.error('Error fetching latest quiz:', error); // Log error for debugging
+        res.status(500).json({ message: 'Error fetching latest quiz: ' + error.message }); // Return JSON error message
+    }
+});
+
+
 // Catch-all route to serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'index.html'));
