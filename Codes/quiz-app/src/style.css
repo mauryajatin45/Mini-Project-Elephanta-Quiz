@@ -187,6 +187,10 @@ body {
   width: 23%;
   height: auto;
 }
+.Customer_support{
+  position: absolute;
+  bottom: 7.5%;
+}
 
 .underline {
   text-decoration: none;
@@ -871,4 +875,11 @@ select {
   align-items: center;
   animation: none;
   transition: none;
+}
+.personal-details{
+  border: 1px solid black;
+  width: 65%;
+  height: 30%;
+  margin: auto;
+  margin-top: 4%;
 }
