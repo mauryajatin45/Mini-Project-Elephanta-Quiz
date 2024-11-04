@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = isLogin ? 'Log In' : 'Sign Up';
         toggleText.textContent = isLogin ? "Don't have an account?" : 'Already have an account?';
         toggleBtn.textContent = isLogin ? 'Sign Up' : 'Log In';
-        additionalInfo.style.display = isLogin ? 'none' : 'block'; // Show additional info on sign-up
+        additionalInfo.style.display = isLogin ? 'none' : 'block';
     };
 
     const signUp = async (userData) => {
-        console.log(userData); // Log user data to console
+        console.log(userData);
         try {
             const response = await fetch('http://localhost:5000/signup', {
                 method: 'POST',
@@ -31,16 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(userData),
             });
             const data = await response.json();
-            alert(data.message);
-            if (response.status === 201) {
-                toggleForm();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to sign up');
             }
+            alert(data.message);
+            toggleForm();
         } catch (error) {
-            alert('Error during sign up');
+            alert('Error during sign up: ' + error.message);
             console.error('Error details:', error);
         }
     };
-    
+
     const logIn = async (userData) => {
         try {
             const response = await fetch('http://localhost:5000/login', {
@@ -49,19 +50,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(userData),
             });
             const data = await response.json();
-            alert(data.message);
-            if (response.status === 200) {
-                window.location.href = 'index.html'; // Redirect to landing page
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to log in');
             }
+            alert(data.message);
+            window.location.href = 'index.html';
         } catch (error) {
-            alert('Error during login');
+            alert('Error during login: ' + error.message);
             console.error('Login error:', error);
         }
     };
 
     const handleGoogleSignIn = async (response) => {
-        const user = response.credential; // JWT token
-        const userInfo = JSON.parse(atob(user.split('.')[1])); // Decode JWT
+        const user = response.credential;
+        const userInfo = JSON.parse(atob(user.split('.')[1]));
 
         try {
             const res = await fetch('http://localhost:5000/google-login', {
@@ -70,12 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username: userInfo.sub, email: userInfo.email, name: userInfo.name }),
             });
             const data = await res.json();
-            alert(data.message);
-            if (res.status === 200) {
-                window.location.href = 'index.html'; // Redirect to landing page
+            if (!res.ok) {
+                throw new Error(data.message || 'Failed to log in with Google');
             }
+            alert(data.message);
+            window.location.href = 'index.html';
         } catch (error) {
-            alert('Error during Google login');
+            alert('Error during Google login: ' + error.message);
             console.error('Google login error:', error);
         }
     };
@@ -87,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
             countries.forEach(country => {
                 const option = document.createElement('option');
-                option.value = country.cca2; // Use country code
+                option.value = country.cca2;
                 option.textContent = country.name.common;
                 countrySelect.appendChild(option);
             });
@@ -97,26 +100,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const fetchStates = async (countryCode) => {
-        // Clear previous states
         stateSelect.innerHTML = '<option value="">Select State</option>';
         stateSelect.style.display = 'none';
-    
+
         const countryGeonameId = {
-            'US': '6252001', // USA
-            'CA': '6252002', // Canada
-            // Add more countries and their geonameId as needed
+            'US': '6252001',
+            'CA': '6252002',
         };
-    
+
         if (countryCode in countryGeonameId) {
             try {
                 const response = await fetch(`http://api.geonames.org/childrenJSON?geonameId=${countryGeonameId[countryCode]}&username=YOUR_USERNAME`);
                 const data = await response.json();
-                const states = data.geonames; // Assuming the response contains 'geonames'
-    
+                const states = data.geonames;
+
                 states.forEach(state => {
                     const option = document.createElement('option');
-                    option.value = state.geonameId; // Assuming state object has 'geonameId'
-                    option.textContent = state.name; // Assuming state object has 'name'
+                    option.value = state.geonameId;
+                    option.textContent = state.name;
                     stateSelect.appendChild(option);
                 });
                 stateSelect.style.display = 'block';
@@ -125,8 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
-    
-    // Event listeners
+
     countrySelect.addEventListener('change', (e) => {
         const countryCode = e.target.value;
         fetchStates(countryCode);
@@ -156,10 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     toggleBtn.addEventListener('click', toggleForm);
 
-    // Google Sign-In Initialization
     function initializeGoogleSignIn() {
         google.accounts.id.initialize({
-            client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com', // Replace with your actual client ID
+            client_id: '1074089808265-467bp3smkiasr1jq7nfv7fp8drt57ird.apps.googleusercontent.com',
             callback: handleGoogleSignIn
         });
         google.accounts.id.renderButton(
@@ -168,12 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    // Fetch countries on page load
     fetchCountries();
-
-    // Initialize the form to show sign-up by default
     updateFormUI();
-
-    // Initialize Google Sign-In
     window.onload = initializeGoogleSignIn;
 });

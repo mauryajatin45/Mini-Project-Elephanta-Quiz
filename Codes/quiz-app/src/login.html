@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,33 +10,34 @@
 <body>
     <div class="container" id="form-container">
         <h2 id="form-title">Sign Up</h2>
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
+        <form id="auth-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
 
-        <div id="additional-info" style="display: none;">
-            <input type="text" id="name" placeholder="Name" required>
-            <input type="text" id="surname" placeholder="Surname" required>
-            <input type="text" id="mobile" placeholder="Mobile No." required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="date" id="dob" placeholder="Date of Birth" required>
-            <select id="country" required>
-                <option value="">Select Country</option>
-            </select>
-            <select id="state" required style="display: none;">
-                <option value="">Select State</option>
-            </select>
-        </div>
+            <div id="additional-info" style="display: none;">
+                <input type="text" id="name" placeholder="Name" required>
+                <input type="text" id="surname" placeholder="Surname" required>
+                <input type="text" id="mobile" placeholder="Mobile No." required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="date" id="dob" placeholder="Date of Birth" required>
+                <select id="country" required>
+                    <option value="">Select Country</option>
+                </select>
+                <select id="state" required style="display: none;">
+                    <option value="">Select State</option>
+                </select>
+            </div>
 
-        <button id="submit-btn">Sign Up</button>
-        <div id="google-signin-button"></div>
+            <button id="submit-btn" type="button">Sign Up</button>
+            <div id="google-signin-button"></div>
 
-        <div class="toggle">
-            <p id="toggle-text">Already have an account?</p>
-            <button id="toggle-btn">Log In</button>
-        </div>
+            <div class="toggle">
+                <p id="toggle-text">Already have an account?</p>
+                <button id="toggle-btn" type="button">Log In</button>
+            </div>
+        </form>
     </div>
 
     <script src="login.js"></script>
-    
 </body>
 </html>

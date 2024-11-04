@@ -121,8 +121,3 @@ async function fetchUserName() {
 
 // Call the fetchUserName function when the page loads
 window.onload = fetchUserName;
-
-
-
-let personalDetailName = document.querySelector('#personal-details-name');
-personalDetailName.innerText = 'Name'
